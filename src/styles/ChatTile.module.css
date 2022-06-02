@@ -1,0 +1,77 @@
+.chatTile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 0 0 15px;
+}
+
+.chatTile:hover {
+    background: rgba(43,57,66,0.8);
+    cursor: pointer;
+}
+
+.chatTile:hover .dropdownIcon {
+    display: block;
+}
+
+.chatImg {
+    background: url('https://wallpaperaccess.com/full/4149610.jpg') center center;
+    background-size: cover;
+    width: 49px;
+    height: 49px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.chatTileContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    color: white;
+    padding: 10px 15px 10px;
+    border-bottom: 1px solid rgba(43,57,66,0.8);
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    min-width: 100%;
+}
+
+.title > div {
+    color: rgba(233,237,239);
+    font-size: 17px;
+}
+
+.title > span {
+    color: rgba(134,150,160,1);
+    font-size: 12px;
+}
+
+.chatDesc {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.chatActions {
+    min-height: 25px;
+}
+
+
+.chatActions > * {
+    color: rgba(134,150,160,1);
+    font-size: 24px;
+}
+
+.chatDesc > span {
+    color: rgba(209,215,219);
+    font-size: 14px;
+}
+
+.dropdownIcon {
+    display: none;
+}

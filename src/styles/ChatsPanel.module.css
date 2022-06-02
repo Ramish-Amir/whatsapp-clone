@@ -1,0 +1,77 @@
+.chatsPanel {
+    width: 35%;
+    min-height: 100vh;
+    border-right: 1px solid rgba(237, 248, 245, 1);
+    background-color: rgba(18, 27, 34, 1)
+}
+
+.cpHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: rgba(31, 44, 52, 1);
+}
+
+.userDP {
+    background: url('https://wallpaperaccess.com/full/4149610.jpg') center center;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.headerActions>* {
+    font-size: 24px;
+    color: rgba(133, 146, 154, 1);
+    margin: 0 10px;
+}
+
+.panelSearch {
+    width: 100%;
+    background: rgba(18, 27, 34, 1);
+    padding: 5px 12px;
+    border-bottom: 1px solid rgba(43,57,66,0.8);
+
+}
+
+.searchBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 24px;
+    background-color: rgba(31, 44, 52, 1);
+    border-radius: 10px;
+}
+
+.searchBox>.icon {
+    color: rgba(133, 146, 154, 1);
+    font-size: 22px;
+    margin-right: 8px;
+}
+
+.searchBox>input {
+    outline: none;
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: white;
+}
+
+.chatTilesContainer {
+    overflow-y: auto;
+    max-height: calc(100vh - 109px);
+}
+
+.chatTilesContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chatTilesContainer::-webkit-scrollbar-track {
+    background: none;
+}
+
+.chatTilesContainer::-webkit-scrollbar-thumb {
+    background: rgba(55,62,68,1);
+}
