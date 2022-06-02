@@ -1,7 +1,8 @@
 .chatsPanel {
     width: 35%;
+    min-width: 300px;
     min-height: 100vh;
-    border-right: 1px solid rgba(237, 248, 245, 1);
+    border-right: 2px solid rgba(43,57,66,1);
     background-color: rgba(18, 27, 34, 1)
 }
 
@@ -10,6 +11,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    height: 60px;
     padding: 10px 16px;
     background-color: rgba(31, 44, 52, 1);
 }
@@ -33,7 +35,6 @@
     background: rgba(18, 27, 34, 1);
     padding: 5px 12px;
     border-bottom: 1px solid rgba(43,57,66,0.8);
-
 }
 
 .searchBox {
@@ -57,6 +58,7 @@
     border: none;
     font-size: 14px;
     color: white;
+    width: 100%;
 }
 
 .chatTilesContainer {

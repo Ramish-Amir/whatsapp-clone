@@ -1,6 +1,75 @@
-
-  .chatWindow {
+.chatWindow {
     width: 65%;
     min-height: 100vh;
-  
-  }
+    position: relative;
+}
+
+.cwHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 10px 16px;
+    background-color: rgba(31, 44, 52, 1);
+}
+
+.windowTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.chatTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 15px;
+    color: #E9EDEF;
+}
+
+.userDP {
+    background: url('https://wallpaperaccess.com/full/4149610.jpg') center center;
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.headerActions>* {
+    font-size: 24px;
+    color: rgba(133, 146, 154, 1);
+    margin: 0 10px;
+}
+
+.bottomInputBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    background: rgba(31, 44, 52, 1);
+    padding: 10px;
+}
+
+.bottomInputBar>input {
+    width: 85%;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: rgba(133, 146, 154, 0.2);
+    color: #E9EDEF;
+    padding: 8px 20px;
+    font-size: 15px;
+}
+
+.bottomInputBar>input::placeholder {
+    color: rgba(233,237,239, 0.5);
+}
+
+.bottomIcons {
+    font-size: 26px;
+    color: rgba(133, 146, 154, 1);
+    margin: 5px 10px 5px 0;
+    width: 5%;
+}

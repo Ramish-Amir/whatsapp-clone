@@ -8,6 +8,11 @@
 .chatTile:hover {
     background: rgba(43,57,66,0.8);
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.activeTile {
+    background: rgba(43,57,66,1);
 }
 
 .chatTile:hover .dropdownIcon {
@@ -29,7 +34,7 @@
     justify-content: center;
     width: 100%;
     color: white;
-    padding: 10px 15px 10px;
+    padding: 10px 15px 10px 0;
     border-bottom: 1px solid rgba(43,57,66,0.8);
 }
 
