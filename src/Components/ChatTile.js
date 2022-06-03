@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../styles/ChatTile.module.css'
 import { MdExpandMore } from "react-icons/md";
+import PanelDropdown from './PanelDropdown';
 
-function ChatTile() {
+const ChatTile = () => {
+  const [openDropdown, setOpenDropdown] = useState(false)
+
   return (
     <div className={styles.chatTile}>
       <div className={styles.chatImgCont}>
@@ -16,8 +19,10 @@ function ChatTile() {
         <div className={styles.chatDesc}>
           <span>Thanks</span>
           <div className={styles.chatActions}>
-            <MdExpandMore className={styles.dropdownIcon} />
+            <MdExpandMore onClick={() => {setOpenDropdown(!openDropdown)}} className={styles.dropdownIcon} />
+            {openDropdown && <PanelDropdown />}
           </div>
+          
         </div>
       </div>
     </div>

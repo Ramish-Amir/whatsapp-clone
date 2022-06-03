@@ -3,7 +3,8 @@
     min-width: 300px;
     min-height: 100vh;
     border-right: 2px solid rgba(43,57,66,1);
-    background-color: rgba(18, 27, 34, 1)
+    background-color: rgba(18, 27, 34, 1);
+    overflow:visible;
 }
 
 .cpHeader {
@@ -59,6 +60,10 @@
     font-size: 14px;
     color: white;
     width: 100%;
+}
+
+.searchBox>input::placeholder {
+    color: rgba(133, 146, 154, 1);
 }
 
 .chatTilesContainer {

@@ -1,16 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../styles/ChatWindow.module.css'
 import ChatWindowHeader from './ChatWindowHeader'
 import { MdEmojiEmotions, MdAttachFile, MdMic } from "react-icons/md";
 
-
-const sentMsg = () => {
-    return (
-        <div></div>
-    )
-}
-
 function ChatWindow() {
+    const [input, setInput] = useState('');
+
     return (
         <div className={styles.chatWindow}>
             <ChatWindowHeader />

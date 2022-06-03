@@ -49,6 +49,7 @@
     flex: 1;
     padding: 12px;
     background: url('https://img.wallpapersafari.com/desktop/728/410/19/15/HlpKYq.png') center center;
+    /* background: url('https://www.wallpaperkiss.com/wimg/b/111-1112295_big.jpg') center center; */
     background-size: cover;
     overflow-y: auto;
     height: calc(100vh - 109px);
