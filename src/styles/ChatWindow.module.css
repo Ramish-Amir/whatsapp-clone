@@ -5,6 +5,7 @@
 }
 
 .cwHeader {
+    z-index: 10;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -12,6 +13,7 @@
     height: 60px;
     padding: 10px 16px;
     background-color: rgba(31, 44, 52, 1);
+
 }
 
 .windowTitle {
@@ -40,6 +42,73 @@
     color: rgba(133, 146, 154, 1);
     margin: 0 10px;
 }
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 12px;
+    background: url('https://img.wallpapersafari.com/desktop/728/410/19/15/HlpKYq.png') center center;
+    background-size: cover;
+    overflow-y: auto;
+    height: calc(100vh - 109px);
+    max-height: calc(100vh - 109px);
+    z-index: -1;
+
+}
+
+.chat::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat::-webkit-scrollbar-track {
+    background: none;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: rgba(55,62,68,0.7);
+}
+
+
+.sent {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+}
+
+.received {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.message {
+    /* display: flex;
+    flex-direction: row; */
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #E9EDEF;
+    margin: 5px 0;
+    max-width: 60%;
+}
+
+.sent > .message {
+    background-color: rgba(0,93,75,1);
+}
+
+.received > .message {
+    background-color: rgba(31, 44, 52, 1);
+}
+
+.msgTime {
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 11px;
+    color: #EFFFFF99;
+}
+
+
 
 .bottomInputBar {
     position: absolute;

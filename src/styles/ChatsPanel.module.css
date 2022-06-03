@@ -67,7 +67,7 @@
 }
 
 .chatTilesContainer::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .chatTilesContainer::-webkit-scrollbar-track {
