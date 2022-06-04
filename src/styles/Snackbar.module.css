@@ -1,0 +1,55 @@
+.snackbar {
+    position: absolute;
+    top: 115px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 90%;
+    background-color: rgba(43,57,66,1);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 10px;
+    color: rgba(233,237,239, 1);
+    font-size: 20px;
+}
+
+.cancel {
+    cursor: pointer;
+}
+
+.snackbar input {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: rgba(133, 146, 154, 0.2);
+    color: #E9EDEF;
+    padding: 8px 20px;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.snackbar input::placeholder {
+    color: rgba(233,237,239, 0.5);
+}
+
+.snackbar .footer {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.snackbar button {
+    cursor: pointer; 
+    padding: 8px 20px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(133, 146, 154, 1);
+    color: white;
+}

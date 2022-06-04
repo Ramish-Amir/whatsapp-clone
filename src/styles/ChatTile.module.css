@@ -30,13 +30,21 @@
     display: block;
 }
 
+.chatImgCont {
+    background-color: white;
+    border: none;
+    width: 49px;
+    height: 49px;
+    margin-right: 15px;
+    border-radius: 50%;
+
+}
+
 .chatImg {
-    background: url('https://wallpaperaccess.com/full/4149610.jpg') center center;
-    background-size: cover;
+    background-color: white;
     width: 49px;
     height: 49px;
     border-radius: 50%;
-    margin-right: 15px;
 }
 
 .chatTileContent {
