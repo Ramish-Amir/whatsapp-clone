@@ -1,12 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import ChatsPanel from './Components/ChatsPanel';
-import ChatWindow from './Components/ChatWindow';
+import Home from './Components/home';
+import WhatsApp from './Components/whatsapp';
 
 function App() {
   return (
     <div className="App">
-        <ChatsPanel />
-        <ChatWindow />
+      <Router>
+        <Routes>
+          <Route exact path='/' element={ <Home /> } />
+          <Route exact path='/whatsapp' element={ <WhatsApp /> } ></Route>
+        </Routes>
+        
+      </Router>
+        
     </div>
   );
 }

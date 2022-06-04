@@ -9,3 +9,53 @@
   box-sizing: border-box;
 }
 
+.homeContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(18, 27, 34, 1);
+
+}
+
+.homeCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+  background-color: rgba(31, 44, 52, 1);
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.whatsappLogo {
+  width: 100px;
+}
+
+.homeCard > h1 {
+  color: rgba(133, 146, 154, 1);
+}
+
+.homeCard > button {
+  border: none;
+  outline: none;
+  background-color: rgba(18, 27, 34, 1);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 24px;
+  color: rgba(133, 146, 154, 1);
+  transition: all 0.3s;
+
+}
+.homeCard > button:hover {
+  color: white;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+
+

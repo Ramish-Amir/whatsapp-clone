@@ -6,6 +6,17 @@ import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "reac
 function ChatWindow() {
     const [input, setInput] = useState('');
 
+    const sendMessage = (e) => {
+        e.preventDefault();
+        console.log(input)
+    }
+
+    const handleKeyDown = (e) => {
+        if (input && e.key === 'Enter') {
+            sendMessage(e);
+        }
+    }
+
     return (
         <div className={styles.chatWindow}>
             <div className={styles.cwHeader}>
@@ -65,8 +76,8 @@ function ChatWindow() {
             <div className={styles.bottomInputBar}>
                 <MdEmojiEmotions className={styles.bottomIcons} />
                 <MdAttachFile className={styles.bottomIcons} />
-                <input placeholder='Type a message' />
-                <MdMic className={styles.bottomIcons} />
+                <input placeholder='Type a message' value={input} onChange={(e) => {setInput(e.target.value)}} onKeyDown={(e) => {handleKeyDown(e)}} />
+                <MdMic className={styles.bottomIcons} onClick={sendMessage} />
 
             </div>
 

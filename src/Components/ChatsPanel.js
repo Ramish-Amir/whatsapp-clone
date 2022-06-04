@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/ChatsPanel.module.css'
 import { MdSearch } from "react-icons/md";
 import ChatTile from './ChatTile';
-import { MdDonutLarge, MdChat, MdMoreVert  } from "react-icons/md";
+import { MdDonutLarge, MdChat, MdLogout } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 
 function ChatsPanel() {
+    const [chatList, setChatList] = useState([]);
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const dummyRooms = [1,2,3,4,5,6,7,8,9]
+        generateChatList(dummyRooms);
+    }, [])
+
+    const generateChatList = (roomsList) => { 
+        setChatList( roomsList.map((room, index) => (
+            <ChatTile key={index} />
+        )))
+    }
+
     return (
         <div className={styles.chatsPanel}>
 
@@ -14,7 +30,7 @@ function ChatsPanel() {
                 <div className={styles.headerActions}>
                     <MdDonutLarge />
                     <MdChat />
-                    <MdMoreVert />
+                    <MdLogout onClick={() => navigate('/')} />
                 </div>
             </div>
 
@@ -26,6 +42,10 @@ function ChatsPanel() {
                 </div>
             </div>
             <div className={styles.chatTilesContainer}>
+                
+                {chatList.length > 0 && chatList}
+
+                {/* <ChatTile />
                 <ChatTile />
                 <ChatTile />
                 <ChatTile />
@@ -49,8 +69,7 @@ function ChatsPanel() {
                 <ChatTile />
                 <ChatTile />
                 <ChatTile />
-                <ChatTile />
-                <ChatTile />
+                <ChatTile /> */}
             </div>
         </div>
     )

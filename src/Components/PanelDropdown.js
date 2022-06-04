@@ -13,4 +13,4 @@ function PanelDropdown() {
   )
 }
 
-export default PanelDropdown
+export default PanelDropdown;
