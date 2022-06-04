@@ -15,7 +15,7 @@ function ChatsPanel() {
     useEffect(() => { 
         const initialChatList = [{
             name: 'Test Chat',
-            profileUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV3uRw6RO8vGPqf4MLmHgXTqyV74h7VBY5ow&usqp=CAU',
+            profileUrl: 'https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg',
             time: '2:17 pm'
         }]
         setChatList(initialChatList)
@@ -37,9 +37,15 @@ function ChatsPanel() {
 
     }
 
+    const onDeleteChat = (index) => {
+        const tempList = [...chatList]
+        tempList.splice(index,1)
+        setChatList(tempList)
+    }
+
     const generateChatList = (chats) => { 
         return ( chats.map((chat, index) => (
-            <ChatTile key={index} chat={chat} />
+            <ChatTile key={index} id={index} chat={chat} onDeleteChat={onDeleteChat} />
         )))
     }
 

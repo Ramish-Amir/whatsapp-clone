@@ -10,7 +10,7 @@ const ChatTile = (props) => {
     <div className={styles.chatTile}>
       <div className={styles.chatImgCont}>
         <div className={styles.chatImg} style={{
-          background: `url(${props.chat?.profileUrl}) center center`,
+          backgroundImage: `url(${props.chat?.profileUrl})`,
           backgroundSize: 'cover'
         }} />
       </div>
@@ -23,7 +23,7 @@ const ChatTile = (props) => {
           <span>Message ... </span>
           <div className={styles.chatActions}>
             <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
-            {openDropdown && <PanelDropdown />}
+            {openDropdown && <PanelDropdown id={props.id} onDeleteChat={props.onDeleteChat} />}
           </div>
 
         </div>

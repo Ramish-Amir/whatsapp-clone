@@ -75,6 +75,7 @@
 
 .chatTilesContainer {
     overflow-y: auto;
+    height: calc(100vh - 109px);
     max-height: calc(100vh - 109px);
 }
 

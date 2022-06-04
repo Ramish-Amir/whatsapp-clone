@@ -28,7 +28,7 @@ function Snackbar(props) {
             </div>
 
             <form>
-                <input placeholder='Enter Name' value={chat?.name} onChange={(e) => {setChat({...chat, name: e.target.value})}}  />
+                <input autoFocus placeholder='Enter Name' value={chat?.name} onChange={(e) => {setChat({...chat, name: e.target.value})}}  />
                 <input placeholder='Enter Profile Picture Url' value={chat?.profileUrl} onChange={(e) => {setChat({...chat, profileUrl: e.target.value})}} />
                 <div className={styles.footer}><button onClick={onAdd}>Add</button></div>
             </form>
