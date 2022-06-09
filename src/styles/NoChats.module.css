@@ -1,0 +1,17 @@
+.noChatWindow {
+    width: 65%;
+    min-height: 100vh;
+    position: relative;
+    background-color: rgba(31, 44, 52, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}

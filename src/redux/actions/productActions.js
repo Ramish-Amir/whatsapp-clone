@@ -13,3 +13,9 @@ export const selectedChat = (chat) => {
         payload: chat
     }
 }
+
+export const removeSelectedChat = () => {
+    return {
+        type : ActionsTypes.REMOVE_SELECTED_CHAT
+    }
+}
