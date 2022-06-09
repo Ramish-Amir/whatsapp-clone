@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from '../styles/ChatTile.module.css'
 import { MdExpandMore } from "react-icons/md";
 import PanelDropdown from './PanelDropdown';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ChatTile = (props) => {
   const [openDropdown, setOpenDropdown] = useState(false)
@@ -23,7 +24,7 @@ const ChatTile = (props) => {
           <span>Message ... </span>
           <div className={styles.chatActions}>
             <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
-            {openDropdown && <PanelDropdown id={props.id} onDeleteChat={props.onDeleteChat} />}
+            {openDropdown && <PanelDropdown id={props.id} />}
           </div>
 
         </div>

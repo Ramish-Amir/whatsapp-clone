@@ -1,10 +1,21 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setChats } from '../redux/actions/productActions';
 import styles from '../styles/PanelDropdown.module.css';
 
 function PanelDropdown(props) {
+  const allChats = useSelector(state => state.allChats.chats)
+  const dispatch = useDispatch()
+
+  const onDeleteChat = (id) => {
+    const chatList = [...allChats]
+    chatList.splice(id, 1)
+    dispatch(setChats(chatList))
+  }
+
   return (
     <div className={styles.dropdown}>
-        <div className={styles.item} onClick={() => {props.onDeleteChat(props.id)}}>Delete Chat</div>
+        <div className={styles.item} onClick={() => {onDeleteChat(props.id)}}>Delete Chat</div>
     </div>
   )
 }
