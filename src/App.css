@@ -40,6 +40,18 @@
   color: rgba(133, 146, 154, 1);
 }
 
+.homeCard > span {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(177, 188, 195);
+}
+
+.homeCard > p {
+  text-align: center;
+  color: rgb(177, 188, 195);
+
+}
+
 .homeCard > button {
   border: none;
   outline: none;

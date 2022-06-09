@@ -29,7 +29,7 @@ function Snackbar(props) {
 
     const onAdd = (e) => {
         e.preventDefault();
-        if (chat.name && chat.profileUrl) {
+        if (chat.name) {
             const newChat = {
                 name: chat.name,
                 profileUrl: chat.profileUrl,
