@@ -33,7 +33,8 @@ function Snackbar(props) {
             const newChat = {
                 name: chat.name,
                 profileUrl: chat.profileUrl,
-                time: getChatTime(new Date)
+                time: getChatTime(new Date),
+                chat: []
             }
             dispatch(setChats([...allChats, newChat]))
         }

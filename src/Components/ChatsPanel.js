@@ -5,32 +5,33 @@ import ChatTile from './ChatTile';
 import { MdDonutLarge, MdChat, MdLogout } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import Snackbar from './Snackbar';
-import { useDispatch, useSelector } from 'react-redux';
-import { setChats } from '../redux/actions/productActions';
+import { useSelector } from 'react-redux';
 
 
 function ChatsPanel() {
-    const dispatch = useDispatch()
     const allChats = useSelector((state) => state.allChats.chats)
     const [openSnackbar, setOpenSnackBar] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // const initialChat = {
-        //         name: 'Test Chat',
-        //         profileUrl: 'https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg',
-        //         time: '2:17 pm'
-        // }
-        // dispatch(setChats([initialChat]))
     }, [])
 
     const onCloseSnackBar = () => {
         setOpenSnackBar(false)
     }
 
-    const renderChatList = allChats.map((chat, index) => (
-        <ChatTile key={index} id={index} chat={chat} />
-    ))
+    const generateChatList = () => {
+        return (
+            allChats.map((chat, index) => (
+                <ChatTile key={index} id={index} chat={chat}
+                 />
+            ))
+        )
+    }
+
+    // const renderChatList = allChats.map((chat, index) => (
+    //     <ChatTile key={index} id={index} chat={chat} onClick={() => {onOpenSelectedChat()}} />
+    // ))
 
     return (
         <div className={styles.chatsPanel}>
@@ -53,7 +54,7 @@ function ChatsPanel() {
             </div>
             <div className={styles.chatTilesContainer}>
                 
-                {allChats.length > 0 && renderChatList}
+                {allChats.length > 0 && generateChatList()}
 
             </div>
 

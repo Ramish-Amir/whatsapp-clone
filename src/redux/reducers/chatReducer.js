@@ -5,7 +5,8 @@ const initialChatsState = {
         {
         name: 'Test Chat',
         profileUrl: 'https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg',
-        time: '2:17 pm'
+        time: '2:17 pm',
+        chat: []
     } 
 ]
 }
