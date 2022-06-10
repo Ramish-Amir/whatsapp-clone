@@ -104,7 +104,7 @@
 .msgTime {
     display: flex;
     flex-direction: row-reverse;
-    font-size: 11px;
+    font-size: 10px;
     color: #EFFFFF99;
 }
 

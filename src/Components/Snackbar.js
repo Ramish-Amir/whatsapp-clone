@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from '../styles/Snackbar.module.css'
 import { MdCancel } from "react-icons/md"
 import { useDispatch, useSelector } from 'react-redux'
-import { setChats } from '../redux/actions/productActions'
+import { selectedChat, setChats } from '../redux/actions/productActions'
 
 function Snackbar(props) {
     const allChats = useSelector((state) => state.allChats.chats)
@@ -36,7 +36,8 @@ function Snackbar(props) {
                 time: getChatTime(new Date),
                 chat: []
             }
-            dispatch(setChats([...allChats, newChat]))
+            dispatch(setChats([newChat, ...allChats ]))
+            dispatch(selectedChat(newChat))
         }
         props.onCloseSnackbar()
     }

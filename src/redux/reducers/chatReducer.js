@@ -6,7 +6,18 @@ const initialChatsState = {
         name: 'Test Chat',
         profileUrl: 'https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg',
         time: '2:17 pm',
-        chat: []
+        chat: [
+            {
+                text: 'Message to be sent',
+                time: '2:17 pm',
+                sent: true
+            },
+            {
+                text: 'Message to be received',
+                time: '2:17 pm',
+                sent: false
+            }
+        ]
     } 
 ]
 }
