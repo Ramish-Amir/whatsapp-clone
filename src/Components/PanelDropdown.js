@@ -8,6 +8,7 @@ function PanelDropdown(props) {
   const dispatch = useDispatch()
 
   const onDeleteChat = (id) => {
+    props.onCloseDropdown()
     const chatList = [...allChats]
     chatList.splice(id, 1)
     dispatch(setChats(chatList))

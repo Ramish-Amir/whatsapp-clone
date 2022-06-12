@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/ChatTile.module.css'
 import { MdExpandMore } from "react-icons/md";
 import PanelDropdown from './PanelDropdown';
@@ -11,6 +11,17 @@ const ChatTile = (props) => {
   const onOpenSelectedChat = (chat) => {
     dispatch(selectedChat(chat))
   }
+  
+  useEffect(() => {
+    return () => {
+      setOpenDropdown(false)
+    }
+  }, [])
+
+  const onCloseDropdown = () => {
+    setOpenDropdown(false)
+  }
+  
 
   return (
     <div className={styles.chatTile} onClick={() => { onOpenSelectedChat(props.chat) }}>
@@ -29,7 +40,7 @@ const ChatTile = (props) => {
           <span>Message ... </span>
           <div className={styles.chatActions}>
             <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
-            {openDropdown && <PanelDropdown id={props.id} />}
+            {openDropdown && <PanelDropdown id={props.id} onCloseDropdown={onCloseDropdown}  />}
           </div>
 
         </div>
