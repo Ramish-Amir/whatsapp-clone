@@ -1,9 +1,8 @@
 import React from 'react'
-import { useNavigate } from "react-router-dom";
+import AuthCard from './AuthCard';
 
 
 function Home() {
-    const navigate = useNavigate()
     return (
         <div className='homeContainer'>
             <div className='homeCard'>
@@ -13,7 +12,7 @@ function Home() {
                 <p>
                     [ Developed using React JS and Redux for learning purpose. No connection to database. All the data is saved using Redux State Management. ]
                 </p>
-                <button onClick={() => {navigate('/whatsapp')}} >Continue</button>
+                <AuthCard />
             </div>
         </div>
     )
