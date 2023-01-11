@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import styles from '../styles/Snackbar.module.css'
+import styles from '../styles/NewChatCard.module.css'
 import { MdCancel } from "react-icons/md"
 import { useDispatch, useSelector } from 'react-redux'
 import { selectedChat, setChats } from '../redux/actions/productActions'
+import { createChat } from '../services.js/chat'
 
-function Snackbar(props) {
+function NewChatCard(props) {
     const allChats = useSelector((state) => state.allChats.chats)
     const dispatch = useDispatch()
+    const [email, setEmail] = useState('')
     const [chat, setChat] = useState({
         name: '',
         profileUrl: ''
@@ -33,7 +35,7 @@ function Snackbar(props) {
             const newChat = {
                 name: chat.name,
                 profileUrl: chat.profileUrl,
-                time: getChatTime(new Date),
+                time: getChatTime(new Date()),
                 chat: []
             }
             dispatch(setChats([newChat, ...allChats ]))
@@ -42,20 +44,31 @@ function Snackbar(props) {
         props.onCloseSnackbar()
     }
 
+    const onCreateChat = async (e) => {
+        e.preventDefault();
+        if (email.trim()) {
+            await createChat(email)
+        }
+    }
+
     return (
         <div className={styles.snackbar} >
             <div className={styles.header}>
-                <span>Add New Chat</span>
+                <span>Start New Chat</span>
                 <MdCancel className={styles.cancel} onClick={() => props.onCloseSnackbar()} />
             </div>
 
             <form>
-                <input autoFocus placeholder='Enter Name' value={chat?.name} onChange={(e) => {setChat({...chat, name: e.target.value})}}  />
-                <input placeholder='Enter Profile Picture Url' value={chat?.profileUrl} onChange={(e) => {setChat({...chat, profileUrl: e.target.value})}} />
-                <div className={styles.footer}><button onClick={onAdd}>Add</button></div>
+                {/* <input autoFocus placeholder='Enter Name' value={chat?.name} onChange={(e) => {setChat({...chat, name: e.target.value})}}  />
+                <input placeholder='Enter Profile Picture Url' value={chat?.profileUrl} onChange={(e) => {setChat({...chat, profileUrl: e.target.value})}} /> */}
+                {/* <div className={styles.footer}><button onClick={onAdd}>Add</button></div> */}
+
+                <input autoFocus placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}}  />
+
+                <div className={styles.footer}><button onClick={onCreateChat}>Add</button></div>
             </form>
         </div>
     )
 }
 
-export default Snackbar
+export default NewChatCard

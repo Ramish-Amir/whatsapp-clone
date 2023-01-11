@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 
 firebase.initializeApp(firebaseConfig)
 export const db = firebase.firestore()
+export const DEFAULT_AVATAR = 'https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg'
 
 function App() {
   // useEffect(() => {

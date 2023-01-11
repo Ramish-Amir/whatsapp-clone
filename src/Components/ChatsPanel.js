@@ -4,7 +4,7 @@ import { MdSearch } from "react-icons/md";
 import ChatTile from './ChatTile';
 import { MdDonutLarge, MdChat, MdLogout } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-import Snackbar from './Snackbar';
+import NewChatCard from './NewChatCard';
 import { useSelector } from 'react-redux';
 
 
@@ -29,10 +29,6 @@ function ChatsPanel() {
         )
     }
 
-    // const renderChatList = allChats.map((chat, index) => (
-    //     <ChatTile key={index} id={index} chat={chat} onClick={() => {onOpenSelectedChat()}} />
-    // ))
-
     return (
         <div className={styles.chatsPanel}>
 
@@ -41,7 +37,10 @@ function ChatsPanel() {
                 <div className={styles.headerActions}>
                     <MdDonutLarge />
                     <MdChat onClick={() => {setOpenSnackBar(!openSnackbar)}} />
-                    <MdLogout onClick={() => navigate('/')} />
+                    <MdLogout onClick={() => {
+                        localStorage.removeItem('token')
+                        navigate('/')
+                    }} />
                 </div>
             </div>
 
@@ -58,7 +57,7 @@ function ChatsPanel() {
 
             </div>
 
-            {openSnackbar && < Snackbar onCloseSnackbar={onCloseSnackBar} />}
+            {openSnackbar && < NewChatCard onCloseSnackbar={onCloseSnackBar} />}
         </div>
     )
 }

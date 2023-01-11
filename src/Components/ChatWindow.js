@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/ChatWindow.module.css'
 import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,8 +9,11 @@ function ChatWindow() {
     const selectedChat = useSelector(state => state.selectedChat)
     const allChats = useSelector(state => state.allChats.chats)
     const dispatch = useDispatch()
+    const bottom = useRef()
 
     const [input, setInput] = useState('');
+
+
 
     const messages = (selectedChat.chat).map((message, index) => 
         <div key={index} className={message.sent ? styles.sent : styles.received}>
@@ -19,13 +22,18 @@ function ChatWindow() {
             </div>
         </div>
     )
+
+    useEffect(() => {
+        bottom.current.scrollIntoView({behavior: 'smooth'})
+    }, [messages])
+
     const sendMessage = (e) => {
         e.preventDefault()
         updateCurrentChat()
     }
 
     const updateCurrentChat = () => {
-        allChats.map((chat, index) => {
+        allChats.forEach((chat, index) => {
             if (chat.name === selectedChat.name && chat.profileUrl === selectedChat.profileUrl && chat.time === selectedChat.time) {
                 const message = input
                 setInput('')
@@ -41,18 +49,18 @@ function ChatWindow() {
         const prevChat = selectedChat?.chat
         const newMessage = {
             text: message,
-            time: getChatTime(new Date),
+            time: getChatTime(new Date()),
             sent: true
         }
         const reply = {
             text: 'Sorry! I cannot receive your message because the app is not connected to the database.',
-            time: getChatTime(new Date),
+            time: getChatTime(new Date()),
             sent: false
         }
         prevChat.push(newMessage);
         prevChat.push(reply)
         currentChat.chat = prevChat
-        currentChat.time = getChatTime(new Date)
+        currentChat.time = getChatTime(new Date())
         dispatch(setChats([currentChat, ...tempChatList]))
     }
 
@@ -91,46 +99,7 @@ function ChatWindow() {
 
             <div className={styles.chat}>
                 {messages}
-                {/* <div className={`${styles.sent}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.received}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.sent}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.received}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.sent}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.received}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.sent}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div>
-                <div className={`${styles.received}`}>
-                    <div className={`${styles.message}`}>Use the online image color picker above to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value. Under 'Use Your Image' You can upload your own image (for example an screenshot of your desktop), paste an image from clipboard, put a picture url in the textbox below. Or use an website url, you will see a thumbnail on the left side.
-                        <div className={styles.msgTime}>2:17 pm</div>
-                    </div>
-                </div> */}
+                <div ref={bottom}></div>
             </div>
 
             <div className={styles.bottomInputBar}>

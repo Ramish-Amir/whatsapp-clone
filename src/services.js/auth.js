@@ -5,8 +5,8 @@ const HASH_SALT = 8
 
 export const signup = async (data) => {
     try {
-        const { email } = data
         const usersRef = db.collection('users')
+        const { email } = data
 
         const user = await usersRef.where("email", "==", email).get()
 
@@ -30,22 +30,17 @@ export const signup = async (data) => {
 export const login = async (data) => {
     try {
         const { email, password } = data
-        const usersRef = db.collection('users')
 
-        const response = await usersRef.where("email", "==", email).get()
+        const user = await findUserByEmail(email)
 
-        if (!response?.docs?.length) {
+        if (!user) {
             console.log('User does not exist')
             return {
                 error: `User with email: ${email} is not registered.`
             }
         }
 
-        const user = response?.docs[0].data()
-
-        const isCorrectPassword = await bcrypt.compare(password, user?.password)
-
-        console.log(user)
+        const isCorrectPassword = await bcrypt.compare(password, (user?.data()).password)
 
         if (!isCorrectPassword) {
             return { error: 'Incorrect password' }
@@ -56,4 +51,23 @@ export const login = async (data) => {
     } catch (error) {
         console.error('Error on login: ', error)
     }
+}
+
+export const authenticateUser = async () => {
+    const userId = localStorage.getItem("token")
+
+    if (!userId) return null
+
+    const usersRef = db.collection('users')
+    const user = await usersRef.doc(userId).get()
+    return user
+}
+
+export const findUserByEmail = async (email) => {
+    const usersRef = db.collection('users')
+    const response = await usersRef.where('email', '==', email).get()
+
+    if (!response.docs.length) return null
+
+    return response.docs[0]
 }

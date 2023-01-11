@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { login, signup } from '../services.js/auth'
 import styles from '../styles/AuthCard.module.css'
 
 
 function AuthCard() {
+    const navigate = useNavigate()
     const [isSignUpForm, setSignUpForm] = useState(false)
     const [authForm, setAuthForm] = useState({
         name: '',
@@ -32,7 +34,6 @@ function AuthCard() {
 
     const onSignup = async (e) => {
         e.preventDefault()
-        console.log('Auth form: ', authForm)
 
         if (validateForm()) {
             const user = await signup(authForm)
@@ -41,8 +42,8 @@ function AuthCard() {
                 alert(user.error)
             }
             else {
-                console.log('Signup user: ', user)
                 localStorage.setItem("token", user)
+                navigate('whatsapp', true)
             }
 
         }
@@ -53,13 +54,13 @@ function AuthCard() {
 
         if (validateForm()) {
             const user = await login(authForm)
-            console.log('Login user: ', user)
 
             if (user?.error) {
                 console.log(user)
                 alert(user?.error)
             } else {
-                
+                localStorage.setItem('token', user?.id)
+                navigate('/whatsapp', true)
             }
         }
     }
@@ -81,7 +82,7 @@ function AuthCard() {
 
                             <button onClick={(e) => onSignup(e)}>Sign Up</button>
 
-                            <p>Do not have account? {' '}
+                            <p>Already registered? {' '}
                                 <span onClick={() => { setSignUpForm(false) }}>
                                     Login
                                 </span>
@@ -96,7 +97,7 @@ function AuthCard() {
 
                             <button onClick={(e) => onLogin(e)}>Login</button>
 
-                            <p>Already registered? {' '}
+                            <p>Do not have account? {' '}
                                 <span onClick={() => { setSignUpForm(true) }}>
                                     Signup
                                 </span>

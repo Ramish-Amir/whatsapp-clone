@@ -4,6 +4,7 @@ import { MdExpandMore } from "react-icons/md";
 import PanelDropdown from './PanelDropdown';
 import { useDispatch } from 'react-redux';
 import { selectedChat } from '../redux/actions/productActions';
+import { DEFAULT_AVATAR } from '../App';
 
 const ChatTile = (props) => {
   const dispatch = useDispatch()
@@ -27,7 +28,7 @@ const ChatTile = (props) => {
     <div className={styles.chatTile} onClick={() => { onOpenSelectedChat(props.chat) }}>
       <div className={styles.chatImgCont}>
         <div className={styles.chatImg} style={{
-          backgroundImage: `url(${props.chat?.profileUrl})`,
+          backgroundImage: `url(${props.chat?.profileUrl || DEFAULT_AVATAR})`,
           backgroundSize: 'cover'
         }} />
       </div>
