@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from '../styles/NewChatCard.module.css'
 import { MdCancel } from "react-icons/md"
 import { useDispatch, useSelector } from 'react-redux'
-import { selectedChat, setChats } from '../redux/actions/productActions'
+import { openSnackbar, selectedChat, setChats } from '../redux/actions/productActions'
 import { createChat } from '../services.js/chat'
 
 function NewChatCard(props) {
@@ -15,19 +15,19 @@ function NewChatCard(props) {
     })
 
     useEffect(() => {
-      return () => {}
+        return () => { }
     }, [])
-    
+
     const getChatTime = (date) => {
         var hours = date.getHours();
         var minutes = date.getMinutes();
         var ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12;
-        minutes = minutes < 10 ? '0'+minutes : minutes;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
         var strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
-      }
+    }
 
     const onAdd = (e) => {
         e.preventDefault();
@@ -38,7 +38,7 @@ function NewChatCard(props) {
                 time: getChatTime(new Date()),
                 chat: []
             }
-            dispatch(setChats([newChat, ...allChats ]))
+            dispatch(setChats([newChat, ...allChats]))
             dispatch(selectedChat(newChat))
         }
         props.onCloseSnackbar()
@@ -46,9 +46,18 @@ function NewChatCard(props) {
 
     const onCreateChat = async (e) => {
         e.preventDefault();
-        if (email.trim()) {
-            await createChat(email)
+
+        if (!email.trim()) {
+            return
         }
+
+        const chat = await createChat(email)
+
+        if (chat?.error) {
+            dispatch(openSnackbar(chat?.error))
+        }
+
+
     }
 
     return (
@@ -63,7 +72,7 @@ function NewChatCard(props) {
                 <input placeholder='Enter Profile Picture Url' value={chat?.profileUrl} onChange={(e) => {setChat({...chat, profileUrl: e.target.value})}} /> */}
                 {/* <div className={styles.footer}><button onClick={onAdd}>Add</button></div> */}
 
-                <input autoFocus placeholder='Enter email' value={email} onChange={(e) => {setEmail(e.target.value)}}  />
+                <input autoFocus placeholder='Enter email' value={email} onChange={(e) => { setEmail(e.target.value) }} />
 
                 <div className={styles.footer}><button onClick={onCreateChat}>Add</button></div>
             </form>

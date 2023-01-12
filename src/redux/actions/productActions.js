@@ -1,4 +1,4 @@
-import { ActionsTypes } from "../constants/action-types";
+import { ActionsTypes, SnackbarActionTypes } from "../constants/action-types";
 
 export const setChats = (chats) => {
     return {
@@ -16,6 +16,19 @@ export const selectedChat = (chat) => {
 
 export const removeSelectedChat = () => {
     return {
-        type : ActionsTypes.REMOVE_SELECTED_CHAT
+        type: ActionsTypes.REMOVE_SELECTED_CHAT
+    }
+}
+
+export const openSnackbar = (message) => {
+    return {
+        type: SnackbarActionTypes.OPEN_SNACKBAR,
+        payload: message
+    }
+}
+
+export const closeSnackbar = () => {
+    return {
+        type: SnackbarActionTypes.CLOSE_SNACKBAR
     }
 }

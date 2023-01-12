@@ -1,12 +1,15 @@
 
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { closeSnackbar, openSnackbar } from '../redux/actions/productActions'
 import { login, signup } from '../services.js/auth'
 import styles from '../styles/AuthCard.module.css'
 
 
 function AuthCard() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [isSignUpForm, setSignUpForm] = useState(false)
     const [authForm, setAuthForm] = useState({
         name: '',
@@ -19,12 +22,12 @@ function AuthCard() {
         const { name, email, password } = authForm
         if (isSignUpForm) {
             if (!name?.trim() || !email?.trim() || !password?.trim()) {
-                alert('Name, email and password are required!')
+                dispatch(openSnackbar('Name, email and password are required!'))
                 return false
             }
         } else {
             if (!email?.trim() || !password?.trim()) {
-                alert('Fill both email and password fields to proceed!')
+                dispatch(openSnackbar('Fill both email and password fields to proceed!'))
                 return false
             }
         }
@@ -39,7 +42,7 @@ function AuthCard() {
             const user = await signup(authForm)
 
             if (user.error) {
-                alert(user.error)
+                dispatch(openSnackbar(user?.error))
             }
             else {
                 localStorage.setItem("token", user)
@@ -56,8 +59,7 @@ function AuthCard() {
             const user = await login(authForm)
 
             if (user?.error) {
-                console.log(user)
-                alert(user?.error)
+                dispatch(openSnackbar(user?.error))
             } else {
                 localStorage.setItem('token', user?.id)
                 navigate('/whatsapp')

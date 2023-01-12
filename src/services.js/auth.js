@@ -11,7 +11,6 @@ export const signup = async (data) => {
         const user = await usersRef.where("email", "==", email).get()
 
         if (user?.docs?.length) {
-            console.log('User already exists')
             return {
                 error: `User with email: ${email} is already registered.`
             }
