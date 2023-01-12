@@ -18,36 +18,15 @@ function ChatsPanel() {
     const navigate = useNavigate();
 
     const chatsRef = db.collection('chats')
-    const userId = localStorage.getItem('token')
-
-    // const { chats } = useChat(() => { }, [allChats])
-
-    // console.log(myChats)
-
-    // if (userId) {
-    //     chatsRef.onSnapshot(
-    //         async (snapshot) => {
-    // const myChats = await chatsRef
-    //     .where('id', 'like', `%${userId}%`)
-    //     .orderBy('updatedAt')
-    //     .get()
-
-    // console.log(myChats)
-    //         }
-    //     )
-
-    // }
 
     useEffect(() => {
         const getChats = async () => {
             const myChats = await getUserChats()
-            console.log(myChats)
             dispath(setChats(myChats))
         }
         chatsRef.onSnapshot(() => {
             getChats()
         })
-
     }, [])
 
     const onCloseSnackBar = () => {

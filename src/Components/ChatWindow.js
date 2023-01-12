@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/ChatWindow.module.css'
 import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { setChats } from '../redux/actions/productActions';
-import { getChatUser } from '../services.js/chat';
+import { openSnackbar, setChats } from '../redux/actions/productActions';
+import { formatDateFromTimestamp, getChatUser, sendMessage } from '../services.js/chat';
 import { DEFAULT_AVATAR } from '../App';
+import { v4 as uuidv4 } from 'uuid';
+import { selectedChat as setSelectedChat } from '../redux/actions/productActions';
 
 
 function ChatWindow() {
@@ -14,75 +16,58 @@ function ChatWindow() {
     const dispatch = useDispatch()
     const bottom = useRef()
 
+    const userId = localStorage.getItem('token')
+
     const [input, setInput] = useState('');
 
-    const messages = (selectedChat.chat)?.map((message, index) =>
-        <div key={index} className={message.sent ? styles.sent : styles.received}>
-            <div className={styles.message}>{message.text}
-                <div className={styles.msgTime}>{message.time}</div>
-            </div>
-        </div>
-    )
+    useEffect(() => {
+        allChats?.forEach(chat => {
+            if (chat?.chatId === selectedChat?.chatId) {
+                return dispatch(setSelectedChat(chat))
+            }
+        })
+        bottom.current.scrollIntoView({ behavior: 'smooth' })
+    }, [allChats])
 
     useEffect(() => {
-        bottom.current.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
+        bottom.current.scrollIntoView()
+    }, [])
 
     useEffect(() => {
         setChatUser(getChatUser(selectedChat?.users))
     }, [selectedChat])
 
-    const sendMessage = (e) => {
+    const onSendMessage = async (e) => {
         e.preventDefault()
-        updateCurrentChat()
-    }
 
-    const updateCurrentChat = () => {
-        allChats?.forEach((chat, index) => {
-            if (chat.name === selectedChat.name && chat.profileUrl === selectedChat.profileUrl && chat.time === selectedChat.time) {
-                const message = input
-                setInput('')
-                addToChat(index, message)
-            }
-        })
-    }
-
-    const addToChat = (chatIndex, message) => {
-        const currentChat = selectedChat
-        const tempChatList = allChats
-        tempChatList.splice(chatIndex, 1)
-        const prevChat = selectedChat?.chat
+        const messages = selectedChat?.messages || []
         const newMessage = {
-            text: message,
-            time: getChatTime(new Date()),
-            sent: true
+            id: uuidv4(),
+            text: input,
+            uid: userId,
+            time: Date.now()
         }
-        const reply = {
-            text: 'Sorry! I cannot receive your message because the app is not connected to the database.',
-            time: getChatTime(new Date()),
-            sent: false
+        messages.push(newMessage)
+        const response = await sendMessage(selectedChat?.chatId, messages)
+
+        if (response?.error) {
+            dispatch(openSnackbar(response?.error))
         }
-        prevChat.push(newMessage);
-        prevChat.push(reply)
-        currentChat.chat = prevChat
-        currentChat.time = getChatTime(new Date())
-        dispatch(setChats([currentChat, ...tempChatList]))
+
+        setInput('')
     }
 
-    const getChatTime = (date) => {
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        var strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
+    const getChatTime = (timestamp) => {
+        let newDate = new Date(timestamp)
+        const nDate = newDate.toDateString("en-PK", { day: '2-digit', month: '2-digit', year: '2-digit' });
+        const time = newDate.toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' })
+        const fullTime = nDate + ' ' + time
+        return fullTime
     }
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = async (e) => {
         if (input && e.key === 'Enter') {
-            sendMessage(e);
+            await onSendMessage(e);
         }
     }
 
@@ -103,7 +88,19 @@ function ChatWindow() {
             </div>
 
             <div className={styles.chat}>
-                {messages}
+                {
+                    selectedChat?.messages?.map(message =>
+
+                    (<div key={message?.id}
+                        className={message?.uid === userId ? styles.sent : styles.received}>
+                        <div className={styles.message}>
+                            {message?.text}
+                            <div className={styles.msgTime}>{getChatTime(message?.time)}</div>
+                        </div>
+                    </div>)
+                    )
+
+                }
                 <div ref={bottom}></div>
             </div>
 
@@ -111,7 +108,7 @@ function ChatWindow() {
                 <MdEmojiEmotions className={styles.bottomIcons} />
                 <MdAttachFile className={styles.bottomIcons} />
                 <input autoFocus placeholder='Type a message' value={input} onChange={(e) => { setInput(e.target.value) }} onKeyDown={(e) => { handleKeyDown(e) }} />
-                <MdMic className={styles.bottomIcons} onClick={sendMessage} />
+                <MdMic className={styles.bottomIcons} onClick={onSendMessage} />
 
             </div>
 

@@ -64,6 +64,22 @@ export const getChatById = async (chatId) => {
     return chat
 }
 
+export const sendMessage = async (chatId, messages) => {
+    try {
+        const chatRef = db.collection('chats').doc(chatId)
+
+        await chatRef.update({
+            messages,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        })
+
+        return true
+
+    } catch (error) {
+        return { error: 'Error sending message'}
+    }
+}
+
 export const getUserChats = async () => {
     const chatsRef = db.collection('chats')
 
@@ -107,7 +123,7 @@ export const formatDateFromTimestamp = (timestamp) => {
     // Check if the date is from today
     if (date.toDateString() === today.toDateString()) {
         // Return hours and minutes
-        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        return date.toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' });
     }
 
     // Check if the date is from yesterday
@@ -122,9 +138,9 @@ export const formatDateFromTimestamp = (timestamp) => {
     var daysInWeek = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
     if (daysSince < daysInWeek) {
         // Return the day name
-        return date.toLocaleDateString("en-US", { weekday: 'long' });
+        return date.toLocaleDateString("en-PK", { weekday: 'long' });
     }
 
     // Otherwise, return the date in the format dd/mm/yy
-    return date.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: '2-digit' });
+    return date.toLocaleDateString("en-PK", { day: '2-digit', month: '2-digit', year: '2-digit' });
 }

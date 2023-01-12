@@ -2,7 +2,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { closeSnackbar, openSnackbar } from '../redux/actions/productActions'
+import { DEFAULT_AVATAR } from '../App'
+import { openSnackbar } from '../redux/actions/productActions'
 import { login, signup } from '../services.js/auth'
 import styles from '../styles/AuthCard.module.css'
 
@@ -39,7 +40,10 @@ function AuthCard() {
         e.preventDefault()
 
         if (validateForm()) {
-            const user = await signup(authForm)
+            const user = await signup({
+                ...authForm,
+                profileUrl: authForm?.profileUrl || DEFAULT_AVATAR
+            })
 
             if (user.error) {
                 dispatch(openSnackbar(user?.error))
@@ -48,7 +52,6 @@ function AuthCard() {
                 localStorage.setItem("token", user)
                 navigate('whatsapp')
             }
-
         }
     }
 
