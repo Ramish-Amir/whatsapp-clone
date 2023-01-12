@@ -32,7 +32,7 @@ export const createChat = async (email) => {
         const chatsRef = db.collection('chats')
 
         await chatsRef.doc(chatId).set({
-            id: chatId,
+            chatId,
             users: [
                 { id: currentUser.id, name: currentUser.data().name, email: currentUser.data().email, profileUrl: currentUser.data().profileUrl },
                 { id: user.id, name: user.data().name, email: user.data().email, profileUrl: user.data().profileUrl },
@@ -85,6 +85,16 @@ export const getUserChats = async () => {
     })
 
     return myChats
+}
+
+export const getChatUser = (users) => {
+    let chatUser = {}
+    users?.forEach(user => {
+        if (user?.id !== localStorage.getItem('token')) {
+            chatUser = user
+        }
+    })
+    return chatUser
 }
 
 export const formatDateFromTimestamp = (timestamp) => {

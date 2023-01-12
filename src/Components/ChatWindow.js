@@ -3,19 +3,20 @@ import styles from '../styles/ChatWindow.module.css'
 import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { setChats } from '../redux/actions/productActions';
+import { getChatUser } from '../services.js/chat';
+import { DEFAULT_AVATAR } from '../App';
 
 
 function ChatWindow() {
     const selectedChat = useSelector(state => state.selectedChat)
     const allChats = useSelector(state => state.allChats.chats)
+    const [chatUser, setChatUser] = useState({})
     const dispatch = useDispatch()
     const bottom = useRef()
 
     const [input, setInput] = useState('');
 
-
-
-    const messages = (selectedChat.chat).map((message, index) => 
+    const messages = (selectedChat.chat)?.map((message, index) =>
         <div key={index} className={message.sent ? styles.sent : styles.received}>
             <div className={styles.message}>{message.text}
                 <div className={styles.msgTime}>{message.time}</div>
@@ -24,8 +25,12 @@ function ChatWindow() {
     )
 
     useEffect(() => {
-        bottom.current.scrollIntoView({behavior: 'smooth'})
+        bottom.current.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
+
+    useEffect(() => {
+        setChatUser(getChatUser(selectedChat?.users))
+    }, [selectedChat])
 
     const sendMessage = (e) => {
         e.preventDefault()
@@ -33,7 +38,7 @@ function ChatWindow() {
     }
 
     const updateCurrentChat = () => {
-        allChats.forEach((chat, index) => {
+        allChats?.forEach((chat, index) => {
             if (chat.name === selectedChat.name && chat.profileUrl === selectedChat.profileUrl && chat.time === selectedChat.time) {
                 const message = input
                 setInput('')
@@ -70,10 +75,10 @@ function ChatWindow() {
         var ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12;
-        minutes = minutes < 10 ? '0'+minutes : minutes;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
         var strTime = hours + ':' + minutes + ' ' + ampm;
         return strTime;
-      }
+    }
 
     const handleKeyDown = (e) => {
         if (input && e.key === 'Enter') {
@@ -86,10 +91,10 @@ function ChatWindow() {
             <div className={styles.cwHeader}>
                 <div className={styles.windowTitle}>
                     <div className={styles.userDP} style={{
-                        backgroundImage: `url(${selectedChat?.profileUrl})`,
+                        backgroundImage: `url(${chatUser?.profileUrl || DEFAULT_AVATAR})`,
                         backgroundSize: 'cover'
                     }} ></div>
-                    <div className={styles.chatTitle}>{selectedChat.name}</div>
+                    <div className={styles.chatTitle}>{chatUser?.name}</div>
                 </div>
                 <div className={styles.headerActions}>
                     <MdSearch />
@@ -105,7 +110,7 @@ function ChatWindow() {
             <div className={styles.bottomInputBar}>
                 <MdEmojiEmotions className={styles.bottomIcons} />
                 <MdAttachFile className={styles.bottomIcons} />
-                <input placeholder='Type a message' value={input} onChange={(e) => { setInput(e.target.value) }} onKeyDown={(e) => { handleKeyDown(e) }} />
+                <input autoFocus placeholder='Type a message' value={input} onChange={(e) => { setInput(e.target.value) }} onKeyDown={(e) => { handleKeyDown(e) }} />
                 <MdMic className={styles.bottomIcons} onClick={sendMessage} />
 
             </div>

@@ -5,7 +5,7 @@ import PanelDropdown from './PanelDropdown';
 import { useDispatch } from 'react-redux';
 import { selectedChat } from '../redux/actions/productActions';
 import { DEFAULT_AVATAR } from '../App';
-import { formatDateFromISO, formatDateFromTimestamp } from '../services.js/chat';
+import { formatDateFromISO, formatDateFromTimestamp, getChatUser } from '../services.js/chat';
 
 const ChatTile = (props) => {
   const { chat } = props
@@ -13,15 +13,12 @@ const ChatTile = (props) => {
   const dispatch = useDispatch()
   const [openDropdown, setOpenDropdown] = useState(false)
   const onOpenSelectedChat = (chat) => {
+    console.log(chat)
     dispatch(selectedChat(chat))
   }
 
   useEffect(() => {
-    chat?.users?.forEach(user => {
-      if (user?.id !== localStorage.getItem('token')) {
-        setChatUser(user)
-      }
-    })
+    setChatUser(getChatUser(chat?.users))
   }, [chat])
 
   useEffect(() => {

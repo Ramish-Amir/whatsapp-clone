@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeSelectedChat } from '../redux/actions/productActions'
 import ChatsPanel from './ChatsPanel'
@@ -15,12 +15,12 @@ function WhatsApp() {
       dispatch(removeSelectedChat())
     }
   }, [])
-  
+
   return (
     <>
       <ChatsPanel />
       {
-        selectedChat.name ?
+        selectedChat?.chatId ?
           <ChatWindow /> : <NoChats />
       }
     </>
