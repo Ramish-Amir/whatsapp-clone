@@ -55,8 +55,10 @@ function NewChatCard(props) {
 
         if (chat?.error) {
             dispatch(openSnackbar(chat?.error))
+            return
         }
 
+        props.onCloseSnackbar()
 
     }
 

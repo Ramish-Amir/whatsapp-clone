@@ -6,6 +6,8 @@ import { MdDonutLarge, MdChat, MdLogout } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import NewChatCard from './NewChatCard';
 import { useSelector } from 'react-redux';
+import { db } from '../App';
+import { getUserChats } from '../services.js/chat';
 
 
 function ChatsPanel() {
@@ -13,7 +15,30 @@ function ChatsPanel() {
     const [openSnackbar, setOpenSnackBar] = useState(false);
     const navigate = useNavigate();
 
+    const chatsRef = db.collection('chats')
+    const userId = localStorage.getItem('token')
+
+    // if (userId) {
+    //     chatsRef.onSnapshot(
+    //         async (snapshot) => {
+    // const myChats = await chatsRef
+    //     .where('id', 'like', `%${userId}%`)
+    //     .orderBy('updatedAt')
+    //     .get()
+
+    // console.log(myChats)
+    //         }
+    //     )
+
+    // }
+
     useEffect(() => {
+        const fetchChats = async () => {
+            const myChats = await getUserChats()
+            console.log(myChats)
+        }
+        fetchChats()
+
     }, [])
 
     const onCloseSnackBar = () => {
@@ -24,7 +49,7 @@ function ChatsPanel() {
         return (
             allChats.map((chat, index) => (
                 <ChatTile key={index} id={index} chat={chat}
-                 />
+                />
             ))
         )
     }
@@ -36,7 +61,7 @@ function ChatsPanel() {
                 <div className={styles.userDP}></div>
                 <div className={styles.headerActions}>
                     <MdDonutLarge />
-                    <MdChat onClick={() => {setOpenSnackBar(!openSnackbar)}} />
+                    <MdChat onClick={() => { setOpenSnackBar(!openSnackbar) }} />
                     <MdLogout onClick={() => {
                         localStorage.removeItem('token')
                         navigate('/')
@@ -52,7 +77,7 @@ function ChatsPanel() {
                 </div>
             </div>
             <div className={styles.chatTilesContainer}>
-                
+
                 {allChats.length > 0 && generateChatList()}
 
             </div>
