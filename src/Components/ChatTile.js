@@ -5,14 +5,25 @@ import PanelDropdown from './PanelDropdown';
 import { useDispatch } from 'react-redux';
 import { selectedChat } from '../redux/actions/productActions';
 import { DEFAULT_AVATAR } from '../App';
+import { formatDateFromISO, formatDateFromTimestamp } from '../services.js/chat';
 
 const ChatTile = (props) => {
+  const { chat } = props
+  const [chatUser, setChatUser] = useState({})
   const dispatch = useDispatch()
   const [openDropdown, setOpenDropdown] = useState(false)
   const onOpenSelectedChat = (chat) => {
     dispatch(selectedChat(chat))
   }
-  
+
+  useEffect(() => {
+    chat?.users?.forEach(user => {
+      if (user?.id !== localStorage.getItem('token')) {
+        setChatUser(user)
+      }
+    })
+  }, [chat])
+
   useEffect(() => {
     return () => {
       setOpenDropdown(false)
@@ -22,26 +33,25 @@ const ChatTile = (props) => {
   const onCloseDropdown = () => {
     setOpenDropdown(false)
   }
-  
 
   return (
-    <div className={styles.chatTile} onClick={() => { onOpenSelectedChat(props.chat) }}>
+    <div className={styles.chatTile} onClick={() => { onOpenSelectedChat(chat) }}>
       <div className={styles.chatImgCont}>
         <div className={styles.chatImg} style={{
-          backgroundImage: `url(${props.chat?.profileUrl || DEFAULT_AVATAR})`,
+          backgroundImage: `url(${chatUser?.profileUrl || DEFAULT_AVATAR})`,
           backgroundSize: 'cover'
         }} />
       </div>
       <div className={styles.chatTileContent}>
         <div className={styles.title}>
-          <div>{props.chat?.name}</div>
-          <span>{props.chat?.time}</span>
+          <div>{chatUser?.name}</div>
+          <span>{formatDateFromTimestamp(chat?.updatedAt?.seconds)}</span>
         </div>
         <div className={styles.chatDesc}>
           <span>Message ... </span>
           <div className={styles.chatActions}>
             <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
-            {openDropdown && <PanelDropdown id={props.id} onCloseDropdown={onCloseDropdown}  />}
+            {openDropdown && <PanelDropdown id={props.id} onCloseDropdown={onCloseDropdown} />}
           </div>
 
         </div>

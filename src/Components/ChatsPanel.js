@@ -5,18 +5,24 @@ import ChatTile from './ChatTile';
 import { MdDonutLarge, MdChat, MdLogout } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import NewChatCard from './NewChatCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../App';
 import { getUserChats } from '../services.js/chat';
+import { setChats } from '../redux/actions/productActions';
 
 
 function ChatsPanel() {
     const allChats = useSelector((state) => state.allChats.chats)
+    const dispath = useDispatch()
     const [openSnackbar, setOpenSnackBar] = useState(false);
     const navigate = useNavigate();
 
     const chatsRef = db.collection('chats')
     const userId = localStorage.getItem('token')
+
+    // const { chats } = useChat(() => { }, [allChats])
+
+    // console.log(myChats)
 
     // if (userId) {
     //     chatsRef.onSnapshot(
@@ -33,11 +39,14 @@ function ChatsPanel() {
     // }
 
     useEffect(() => {
-        const fetchChats = async () => {
+        const getChats = async () => {
             const myChats = await getUserChats()
             console.log(myChats)
+            dispath(setChats(myChats))
         }
-        fetchChats()
+        chatsRef.onSnapshot(() => {
+            getChats()
+        })
 
     }, [])
 
