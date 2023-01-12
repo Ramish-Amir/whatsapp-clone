@@ -7,6 +7,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { firebaseConfig } from './firebase';
 import { useEffect } from 'react';
+import Snackbar from './Components/Snackbar';
 
 firebase.initializeApp(firebaseConfig)
 export const db = firebase.firestore()
@@ -47,7 +48,7 @@ function App() {
         </Routes>
 
       </Router>
-
+      <Snackbar />
     </div>
   );
 }

@@ -43,7 +43,7 @@ function AuthCard() {
             }
             else {
                 localStorage.setItem("token", user)
-                navigate('whatsapp', true)
+                navigate('whatsapp')
             }
 
         }
@@ -60,7 +60,7 @@ function AuthCard() {
                 alert(user?.error)
             } else {
                 localStorage.setItem('token', user?.id)
-                navigate('/whatsapp', true)
+                navigate('/whatsapp')
             }
         }
     }
