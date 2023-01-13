@@ -76,7 +76,7 @@ export const sendMessage = async (chatId, messages) => {
         return true
 
     } catch (error) {
-        return { error: 'Error sending message'}
+        return { error: 'Error sending message' }
     }
 }
 
@@ -103,6 +103,12 @@ export const getUserChats = async () => {
     return myChats
 }
 
+export const updateCurrentChat = async (chatId) => {
+    const chatRef = db.collection('chats').doc(chatId)
+
+    const updatedDocument = chatRef
+}
+
 export const getChatUser = (users) => {
     let chatUser = {}
     users?.forEach(user => {
@@ -121,7 +127,7 @@ export const formatDateFromTimestamp = (timestamp) => {
     var today = new Date();
 
     // Check if the date is from today
-    if (date.toDateString() === today.toDateString()) {
+    if (date?.toDateString() === today?.toDateString()) {
         // Return hours and minutes
         return date.toLocaleTimeString('en-PK', { hour: '2-digit', minute: '2-digit' });
     }

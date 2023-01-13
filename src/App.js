@@ -6,7 +6,6 @@ import WhatsApp from './Components/whatsapp';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { firebaseConfig } from './firebase';
-import { useEffect } from 'react';
 import Snackbar from './Components/Snackbar';
 
 firebase.initializeApp(firebaseConfig)

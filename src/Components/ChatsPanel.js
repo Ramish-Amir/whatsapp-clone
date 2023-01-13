@@ -33,15 +33,6 @@ function ChatsPanel() {
         setOpenSnackBar(false)
     }
 
-    const generateChatList = () => {
-        return (
-            allChats.map((chat, index) => (
-                <ChatTile key={index} id={index} chat={chat}
-                />
-            ))
-        )
-    }
-
     return (
         <div className={styles.chatsPanel}>
 
@@ -66,7 +57,10 @@ function ChatsPanel() {
             </div>
             <div className={styles.chatTilesContainer}>
 
-                {allChats.length > 0 && generateChatList()}
+                {allChats?.map((chat, index) => (
+                    <ChatTile key={index} id={index} chat={chat}
+                    />
+                ))}
 
             </div>
 

@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/ChatWindow.module.css'
 import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { openSnackbar, setChats } from '../redux/actions/productActions';
-import { formatDateFromTimestamp, getChatUser, sendMessage } from '../services.js/chat';
-import { DEFAULT_AVATAR } from '../App';
+import { openSnackbar } from '../redux/actions/productActions';
+import { getChatUser, sendMessage } from '../services.js/chat';
+import { DEFAULT_AVATAR, db } from '../App';
 import { v4 as uuidv4 } from 'uuid';
-import { selectedChat as setSelectedChat } from '../redux/actions/productActions';
+import { setSelectedChat } from '../redux/actions/productActions';
+
 
 
 function ChatWindow() {
     const selectedChat = useSelector(state => state.selectedChat)
-    const allChats = useSelector(state => state.allChats.chats)
     const [chatUser, setChatUser] = useState({})
     const dispatch = useDispatch()
     const bottom = useRef()
@@ -21,21 +21,26 @@ function ChatWindow() {
     const [input, setInput] = useState('');
 
     useEffect(() => {
-        allChats?.forEach(chat => {
-            if (chat?.chatId === selectedChat?.chatId) {
-                return dispatch(setSelectedChat(chat))
-            }
-        })
         bottom.current.scrollIntoView({ behavior: 'smooth' })
-    }, [allChats])
+    }, [selectedChat])
 
     useEffect(() => {
+        if (selectedChat) {
+            const chatRef = db.collection('chats').doc(selectedChat?.chatId)
+
+            chatRef.onSnapshot((doc) => {
+                console.log('Snap shot')
+                if (doc?.exists && doc?.id === selectedChat?.chatId) {
+                    console.log('Selected chat id: ', selectedChat?.chatId)
+                    console.log('Doc id: ', doc?.id)
+                    dispatch(setSelectedChat(doc.data()))
+                    setChatUser(getChatUser(selectedChat?.users))
+                }
+            })
+
+        }
         bottom.current.scrollIntoView()
     }, [])
-
-    useEffect(() => {
-        setChatUser(getChatUser(selectedChat?.users))
-    }, [selectedChat])
 
     const onSendMessage = async (e) => {
         e.preventDefault()

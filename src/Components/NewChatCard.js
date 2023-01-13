@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from '../styles/NewChatCard.module.css'
 import { MdCancel } from "react-icons/md"
 import { useDispatch, useSelector } from 'react-redux'
-import { openSnackbar, selectedChat, setChats } from '../redux/actions/productActions'
+import { openSnackbar } from '../redux/actions/productActions'
 import { createChat } from '../services.js/chat'
 
 function NewChatCard(props) {
@@ -29,20 +29,20 @@ function NewChatCard(props) {
         return strTime;
     }
 
-    const onAdd = (e) => {
-        e.preventDefault();
-        if (chat.name) {
-            const newChat = {
-                name: chat.name,
-                profileUrl: chat.profileUrl,
-                time: getChatTime(new Date()),
-                chat: []
-            }
-            dispatch(setChats([newChat, ...allChats]))
-            dispatch(selectedChat(newChat))
-        }
-        props.onCloseSnackbar()
-    }
+    // const onAdd = (e) => {
+    //     e.preventDefault();
+    //     if (chat.name) {
+    //         const newChat = {
+    //             name: chat.name,
+    //             profileUrl: chat.profileUrl,
+    //             time: getChatTime(new Date()),
+    //             chat: []
+    //         }
+    //         dispatch(setChats([newChat, ...allChats]))
+    //         dispatch(selectedChat(newChat))
+    //     }
+    //     props.onCloseSnackbar()
+    // }
 
     const onCreateChat = async (e) => {
         e.preventDefault();

@@ -35,7 +35,7 @@ export const chatReducer = (state = initialChatsState, { type, payload }) => {
 export const selectedChatReducer = (state = {}, { type, payload }) => {
     switch (type) {
         case ActionsTypes.SELECTED_CHAT:
-            return { ...state, ...payload }
+            return { ...payload }
         case ActionsTypes.REMOVE_SELECTED_CHAT:
             return {}
         default:
