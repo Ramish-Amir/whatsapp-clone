@@ -29,16 +29,6 @@ export const createChat = async (email) => {
             return { error: `User [${email}] is already in your chat list` }
         }
 
-        const chatsRef = db.collection('chats')
-        await chatsRef.doc(chatId).set({
-            chatId,
-            users: [
-                { id: currentUser.id, name: currentUser.data().name, email: currentUser.data().email, profileUrl: currentUser.data().profileUrl },
-                { id: user.id, name: user.data().name, email: user.data().email, profileUrl: user.data().profileUrl },
-            ],
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        })
-
         const usersRef = db.collection('users')
 
         await usersRef.doc(user.id).update({
@@ -47,6 +37,16 @@ export const createChat = async (email) => {
 
         await usersRef.doc(currentUser.id).update({
             chats: [...currentUser.data()?.chats, chatId]
+        })
+
+        const chatsRef = db.collection('chats')
+        await chatsRef.doc(chatId).set({
+            chatId,
+            users: [
+                { id: currentUser.id, name: currentUser.data().name, email: currentUser.data().email, profileUrl: currentUser.data().profileUrl },
+                { id: user.id, name: user.data().name, email: user.data().email, profileUrl: user.data().profileUrl },
+            ],
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         })
 
         return true
