@@ -13,62 +13,71 @@ import { setSelectedChat } from '../redux/actions/productActions';
 function ChatWindow() {
     const selectedChat = useSelector(state => state.selectedChat)
     const [chatUser, setChatUser] = useState({})
-    const [chatId, setChatId] = useState('XJ3qjzF6YXzL6mljmVGz1Kw5xrae1GzCaZFzzMas')
+    const [chatMessages, setChatMessages] = useState([])
     const dispatch = useDispatch()
+
     const bottom = useRef()
+    const common = useRef()
 
     const userId = localStorage.getItem('token')
 
     const [input, setInput] = useState('');
 
-    useEffect(() => {
-        bottom.current.scrollIntoView()
-        setChatId(selectedChat?.id)
-        setChatUser(getChatUser(selectedChat?.users))
-    }, [selectedChat?.chatId])
+    // useEffect(() => {
+        
+
+    //     return () => {
+    //         console.log('Chat changed >>> ', selectedChat?.chatId)
+    //     }
+    // }, [selectedChat?.chatId])
 
     useEffect(() => {
         console.log('Chatttttt')
-        // if (chatId) {
-            console.log('Selected chat: ', selectedChat)
-            const chatRef = db.doc(`chats/${chatId}`)
-            console.log('Selected chat id: ', chatId)
-            chatRef.onSnapshot((doc) => {
-                console.log('Snap shot: ', doc)
-                if (doc?.exists && doc?.id === chatId) {
-    
-                    console.log('Doc id: ', doc?.id)
-                    dispatch(setSelectedChat(doc.data()))
+        console.log('chat id: ', selectedChat?.chatId)
+        // bottom?.current?.scrollIntoView()
+        setChatUser(getChatUser(selectedChat?.users))
+        // console.log('Chatttttt')
+        if (selectedChat?.chatId) {
+            const chatRef = db.collection('chats').doc(selectedChat.chatId).collection('messages').orderBy('time')
+            console.log('Second useEffect')
+
+            const unsubscribe = chatRef.onSnapshot(snapshot => {
+                const messages = []
+
+                if (snapshot.docs) {
+                    snapshot.docs.forEach(doc => {
+                        messages.push({
+                            id: doc.id,
+                            ...doc.data()
+                        })
+                    })
+
+                    setChatMessages(messages)
+                    bottom?.current?.scrollIntoView()
                 }
             })
-        // }
-        // console.log('Selected chat: ', selectedChat)
-        // const chatRef = db.doc(`chats/${selectedChat?.chatId}`)
-        // console.log('Selected chat id: ', selectedChat?.chatId)
-        // chatRef.onSnapshot((doc) => {
-        //     console.log('Snap shot')
-        //     if (doc?.exists && doc?.id === selectedChat?.chatId) {
 
-        //         console.log('Doc id: ', doc?.id)
-        //         dispatch(setSelectedChat(doc.data()))
 
-        //     }
-        // })
-        bottom.current.scrollIntoView()
-    }, [chatId])
+            return () => {
+                unsubscribe()
+                dispatch(setSelectedChat({}))
+            }
+
+
+        }
+    }, [selectedChat.chatId])
 
     const onSendMessage = async (e) => {
         e.preventDefault()
 
-        const messages = selectedChat?.messages || []
-        const newMessage = {
-            id: uuidv4(),
+        // const messages = selectedChat?.messages || []
+        const message = {
             text: input,
             uid: userId,
             time: Date.now()
         }
-        messages.push(newMessage)
-        const response = await sendMessage(selectedChat?.chatId, messages)
+        // messages.push(newMessage)
+        const response = await sendMessage(selectedChat?.chatId, message)
 
         if (response?.error) {
             dispatch(openSnackbar(response?.error))
@@ -113,9 +122,9 @@ function ChatWindow() {
 
             <div className={styles.chat}>
                 {
-                    selectedChat?.messages?.map(message =>
+                    chatMessages?.map((message, index) =>
 
-                    (<div key={message?.id}
+                    (<div ref={index === chatMessages.length - 1 ? bottom : common} key={message?.id}
                         className={message?.uid === userId ? styles.sent : styles.received}>
                         <div className={styles.message}>
                             <span>{message?.text}</span>
@@ -125,7 +134,7 @@ function ChatWindow() {
                     )
 
                 }
-                <div ref={bottom}></div>
+                {/* <div ref={bottom}></div> */}
             </div>
 
             <div className={styles.bottomInputBar}>

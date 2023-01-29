@@ -4,7 +4,7 @@ import { MdExpandMore } from "react-icons/md";
 import PanelDropdown from './PanelDropdown';
 import { useDispatch } from 'react-redux';
 import { setSelectedChat } from '../redux/actions/productActions';
-import { DEFAULT_AVATAR } from '../App';
+import { db, DEFAULT_AVATAR } from '../App';
 import { formatDateFromTimestamp, getChatUser } from '../services.js/chat';
 
 const ChatTile = (props) => {
@@ -12,6 +12,7 @@ const ChatTile = (props) => {
   const [chatUser, setChatUser] = useState({})
   const dispatch = useDispatch()
   const [openDropdown, setOpenDropdown] = useState(false)
+
   const onOpenSelectedChat = (chat) => {
     dispatch(setSelectedChat(chat))
   }
@@ -44,7 +45,7 @@ const ChatTile = (props) => {
           <span>{formatDateFromTimestamp(chat?.updatedAt?.seconds)}</span>
         </div>
         <div className={styles.chatDesc}>
-          <span className={styles.chatMsg}>{chat?.messages[(chat?.messages.length - 1)]?.text} </span>
+          <span className={styles.chatMsg}>{chat?.lastMessage} </span>
           <div className={styles.chatActions}>
             <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
             {openDropdown && <PanelDropdown id={props.id} onCloseDropdown={onCloseDropdown} />}

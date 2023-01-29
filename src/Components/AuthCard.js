@@ -42,7 +42,8 @@ function AuthCard() {
         if (validateForm()) {
             const user = await signup({
                 ...authForm,
-                profileUrl: authForm?.profileUrl || DEFAULT_AVATAR
+                profileUrl: authForm?.profileUrl || DEFAULT_AVATAR,
+                chats: []
             })
 
             if (user.error) {

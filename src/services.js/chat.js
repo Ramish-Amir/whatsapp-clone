@@ -25,12 +25,11 @@ export const createChat = async (email) => {
 
         const existingChat = await getChatById(chatId)
 
-        // if (existingChat?.exists) {
-        //     return { error: `User [${email}] is already in your chat list` }
-        // }
+        if (existingChat?.exists) {
+            return { error: `User [${email}] is already in your chat list` }
+        }
 
         const chatsRef = db.collection('chats')
-
         await chatsRef.doc(chatId).set({
             chatId,
             users: [
@@ -39,6 +38,16 @@ export const createChat = async (email) => {
             ],
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             messages: []
+        })
+
+        const usersRef = db.collection('users')
+
+        await usersRef.doc(currentUser.id).update({
+            chats: [...user.data()?.chats, chatId]
+        })
+
+        await usersRef.doc(user.id).update({
+            chats: [...user.data()?.chats, chatId]
         })
 
         return true
@@ -64,12 +73,15 @@ export const getChatById = async (chatId) => {
     return chat
 }
 
-export const sendMessage = async (chatId, messages) => {
+export const sendMessage = async (chatId, message) => {
     try {
         const chatRef = db.collection('chats').doc(chatId)
+        const messagesRef = db.collection('chats').doc(chatId).collection('messages')
+
+        await messagesRef.doc().set(message)
 
         await chatRef.update({
-            messages,
+            lastMessage: message?.text,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         })
 
@@ -95,7 +107,7 @@ export const getUserChats = async () => {
         .get()
 
     allChats?.docs?.forEach(chat => {
-        if (chat?.id?.includes(user?.id)) {
+        if (chat?.id?.includes(user?.id)) {            
             myChats.push(chat?.data())
         }
     })
