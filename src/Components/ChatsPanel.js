@@ -16,10 +16,12 @@ function ChatsPanel() {
     const dispath = useDispatch()
     const [openSnackbar, setOpenSnackBar] = useState(false);
     const navigate = useNavigate();
+    const selectedChat = useSelector(state => state.selectedChat)
 
     const chatsRef = db.collection('chats')
 
     useEffect(() => {
+
         const getChats = async () => {
             const myChats = await getUserChats()
             dispath(setChats(myChats))
@@ -28,6 +30,10 @@ function ChatsPanel() {
             getChats()
         })
     }, [])
+
+    useEffect(() => {
+        console.log('Selected chat on snap: ', selectedChat)
+    }, [selectedChat])
 
     const onCloseSnackBar = () => {
         setOpenSnackBar(false)
@@ -57,7 +63,7 @@ function ChatsPanel() {
             </div>
             <div className={styles.chatTilesContainer}>
 
-                {allChats?.map((chat, index) => (
+                {allChats && allChats?.map((chat, index) => (
                     <ChatTile key={index} id={index} chat={chat}
                     />
                 ))}

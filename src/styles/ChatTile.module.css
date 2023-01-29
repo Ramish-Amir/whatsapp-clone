@@ -51,7 +51,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 100%;
+    width: calc(100% - 64px);
     color: white;
     padding: 10px 15px 10px 0;
     border-bottom: 1px solid rgba(43,57,66,0.8);
@@ -79,6 +79,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    max-width: 100%;
 }
 
 .chatActions {
@@ -92,9 +93,16 @@
     font-size: 24px;
 }
 
-.chatDesc > span {
+.chatMsg {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: nowrap;
     color: rgba(209,215,219);
     font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+    max-width: calc(100% - 64px);
 }
 
 .dropdownIcon {

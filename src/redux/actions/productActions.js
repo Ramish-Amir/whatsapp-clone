@@ -9,7 +9,7 @@ export const setChats = (chats) => {
 
 export const setSelectedChat = (chat) => {
     return {
-        type: ActionsTypes.SELECTED_CHAT,
+        type: ActionsTypes.SET_SELECTED_CHAT,
         payload: chat
     }
 }

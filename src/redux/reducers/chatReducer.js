@@ -1,25 +1,6 @@
 import { ActionsTypes } from "../constants/action-types";
 
 const initialChatsState = {
-    // chats: [
-    //     {
-    //         name: 'Test Chat',
-    //         profileUrl: 'https://saiuniversity.edu.in/wp-content/uploads/2021/02/default-img.jpg',
-    //         time: '2:17 pm',
-    //         chat: [
-    //             {
-    //                 text: 'Message to be sent',
-    //                 time: '2:17 pm',
-    //                 sent: true
-    //             },
-    //             {
-    //                 text: 'Message to be received',
-    //                 time: '2:17 pm',
-    //                 sent: false
-    //             }
-    //         ]
-    //     }
-    // ]
     chats: []
 }
 
@@ -34,8 +15,8 @@ export const chatReducer = (state = initialChatsState, { type, payload }) => {
 
 export const selectedChatReducer = (state = {}, { type, payload }) => {
     switch (type) {
-        case ActionsTypes.SELECTED_CHAT:
-            return { ...payload }
+        case ActionsTypes.SET_SELECTED_CHAT:
+            return {...state, ...payload}
         case ActionsTypes.REMOVE_SELECTED_CHAT:
             return {}
         default:

@@ -44,7 +44,7 @@ const ChatTile = (props) => {
           <span>{formatDateFromTimestamp(chat?.updatedAt?.seconds)}</span>
         </div>
         <div className={styles.chatDesc}>
-          <span>{chat?.messages[(chat?.messages.length - 1)]?.text} </span>
+          <span className={styles.chatMsg}>{chat?.messages[(chat?.messages.length - 1)]?.text} </span>
           <div className={styles.chatActions}>
             <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
             {openDropdown && <PanelDropdown id={props.id} onCloseDropdown={onCloseDropdown} />}

@@ -83,14 +83,24 @@
 }
 
 .message {
-    /* display: flex;
-    flex-direction: row; */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     padding: 5px 8px;
     border-radius: 8px;
     font-size: 14px;
     color: #E9EDEF;
     margin: 5px 0;
-    max-width: 60%;
+    max-width: 80%;
+}
+
+.message > span {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 
 .sent > .message {

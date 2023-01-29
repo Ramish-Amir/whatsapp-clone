@@ -13,6 +13,7 @@ import { setSelectedChat } from '../redux/actions/productActions';
 function ChatWindow() {
     const selectedChat = useSelector(state => state.selectedChat)
     const [chatUser, setChatUser] = useState({})
+    const [chatId, setChatId] = useState('XJ3qjzF6YXzL6mljmVGz1Kw5xrae1GzCaZFzzMas')
     const dispatch = useDispatch()
     const bottom = useRef()
 
@@ -21,26 +22,40 @@ function ChatWindow() {
     const [input, setInput] = useState('');
 
     useEffect(() => {
-        bottom.current.scrollIntoView({ behavior: 'smooth' })
-    }, [selectedChat])
+        bottom.current.scrollIntoView()
+        setChatId(selectedChat?.id)
+        setChatUser(getChatUser(selectedChat?.users))
+    }, [selectedChat?.chatId])
 
     useEffect(() => {
-        if (selectedChat) {
-            const chatRef = db.collection('chats').doc(selectedChat?.chatId)
-
+        console.log('Chatttttt')
+        // if (chatId) {
+            console.log('Selected chat: ', selectedChat)
+            const chatRef = db.doc(`chats/${chatId}`)
+            console.log('Selected chat id: ', chatId)
             chatRef.onSnapshot((doc) => {
-                console.log('Snap shot')
-                if (doc?.exists && doc?.id === selectedChat?.chatId) {
-                    console.log('Selected chat id: ', selectedChat?.chatId)
+                console.log('Snap shot: ', doc)
+                if (doc?.exists && doc?.id === chatId) {
+    
                     console.log('Doc id: ', doc?.id)
                     dispatch(setSelectedChat(doc.data()))
-                    setChatUser(getChatUser(selectedChat?.users))
                 }
             })
+        // }
+        // console.log('Selected chat: ', selectedChat)
+        // const chatRef = db.doc(`chats/${selectedChat?.chatId}`)
+        // console.log('Selected chat id: ', selectedChat?.chatId)
+        // chatRef.onSnapshot((doc) => {
+        //     console.log('Snap shot')
+        //     if (doc?.exists && doc?.id === selectedChat?.chatId) {
 
-        }
+        //         console.log('Doc id: ', doc?.id)
+        //         dispatch(setSelectedChat(doc.data()))
+
+        //     }
+        // })
         bottom.current.scrollIntoView()
-    }, [])
+    }, [chatId])
 
     const onSendMessage = async (e) => {
         e.preventDefault()
@@ -84,6 +99,10 @@ function ChatWindow() {
                         backgroundImage: `url(${chatUser?.profileUrl || DEFAULT_AVATAR})`,
                         backgroundSize: 'cover'
                     }} ></div>
+                    {/* {
+                        // console.log('chatUser: ', chatUser);
+                        console.log('selected chat: ', selectedChat)
+                    } */}
                     <div className={styles.chatTitle}>{chatUser?.name}</div>
                 </div>
                 <div className={styles.headerActions}>
@@ -99,7 +118,7 @@ function ChatWindow() {
                     (<div key={message?.id}
                         className={message?.uid === userId ? styles.sent : styles.received}>
                         <div className={styles.message}>
-                            {message?.text}
+                            <span>{message?.text}</span>
                             <div className={styles.msgTime}>{getChatTime(message?.time)}</div>
                         </div>
                     </div>)
