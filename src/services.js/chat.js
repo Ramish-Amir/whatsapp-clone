@@ -37,17 +37,16 @@ export const createChat = async (email) => {
                 { id: user.id, name: user.data().name, email: user.data().email, profileUrl: user.data().profileUrl },
             ],
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            messages: []
         })
 
         const usersRef = db.collection('users')
 
-        await usersRef.doc(currentUser.id).update({
+        await usersRef.doc(user.id).update({
             chats: [...user.data()?.chats, chatId]
         })
 
-        await usersRef.doc(user.id).update({
-            chats: [...user.data()?.chats, chatId]
+        await usersRef.doc(currentUser.id).update({
+            chats: [...currentUser.data()?.chats, chatId]
         })
 
         return true
@@ -100,16 +99,23 @@ export const getUserChats = async () => {
     if (!user) {
         return { error: 'Looks like you are not logged in' }
     }
+
+    const userChats = user.data().chats
+
+    if (!userChats?.length) {
+        console.log('No chats found')
+        return []
+    }
+
     const myChats = []
 
     const allChats = await chatsRef
+        .where('chatId', 'in', userChats)
         .orderBy('updatedAt', 'desc')
         .get()
 
     allChats?.docs?.forEach(chat => {
-        if (chat?.id?.includes(user?.id)) {            
-            myChats.push(chat?.data())
-        }
+        myChats.push(chat?.data())
     })
 
     return myChats
