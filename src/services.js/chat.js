@@ -96,10 +96,7 @@ export const getUserChats = async () => {
 
     const user = await authenticateUser()
 
-    console.log('User auth >>> ', user)
-
     if (!user) {
-        console.log('User not found in db')
         return {
             error: 'Please login to continue',
             statusCode: 401
@@ -109,7 +106,6 @@ export const getUserChats = async () => {
     const userChats = user.data().chats
 
     if (!userChats?.length) {
-        console.log('No chats found')
         return []
     }
 
@@ -125,6 +121,36 @@ export const getUserChats = async () => {
     })
 
     return myChats
+}
+
+export const deleteUserChat = async (chat) => {
+    try {
+        const batch = db.batch()
+        const usersRef = db.collection('users')
+        chat?.users?.forEach(async (user) => {
+            const userData = await usersRef.doc(user?.id).get()
+            const userChats = userData?.data()?.chats
+            const chats = userChats?.filter(currentChat => currentChat !== chat?.chatId)
+            const userRef = usersRef.doc(user.id)
+            batch.update(userRef, { chats })
+        })
+
+        const chatRef = db.collection('chats').doc(chat?.chatId)
+        batch.delete(chatRef)
+        const messages = await chatRef.collection('messages').get()
+
+        messages?.forEach((doc) => {
+            batch.delete(doc.ref)
+        })
+
+        await batch.commit()
+
+        return true
+    } catch (error) {
+        console.log('ERROR: DELETE CHAT :', error)
+        return { error: 'Could not delete chat!' }
+    }
+
 }
 
 export const updateCurrentChat = async (chatId) => {

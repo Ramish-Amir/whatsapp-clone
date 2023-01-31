@@ -47,8 +47,13 @@ const ChatTile = (props) => {
         <div className={styles.chatDesc}>
           <span className={styles.chatMsg}>{chat?.lastMessage} </span>
           <div className={styles.chatActions}>
-            <MdExpandMore onClick={() => { setOpenDropdown(!openDropdown) }} className={styles.dropdownIcon} />
-            {openDropdown && <PanelDropdown id={props.id} onCloseDropdown={onCloseDropdown} />}
+            <MdExpandMore
+              onClick={(e) => {
+                setOpenDropdown(!openDropdown)
+                e.stopPropagation()
+              }}
+              className={styles.dropdownIcon} />
+            {openDropdown && <PanelDropdown chat={chat} onCloseDropdown={onCloseDropdown} />}
           </div>
 
         </div>

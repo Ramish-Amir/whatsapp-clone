@@ -18,7 +18,6 @@ export const selectedChatReducer = (state = {}, { type, payload }) => {
         case ActionsTypes.SET_SELECTED_CHAT:
             return { ...state, ...payload }
         case ActionsTypes.REMOVE_SELECTED_CHAT:
-            console.log('first')
             return {}
         default:
             return state

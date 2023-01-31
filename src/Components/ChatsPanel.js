@@ -70,7 +70,7 @@ function ChatsPanel() {
             </div>
             <div className={styles.chatTilesContainer}>
 
-                {allChats?.length && allChats?.map((chat, index) => (
+                {allChats?.map((chat, index) => (
                     <ChatTile key={index} id={index} chat={chat}
                     />
                 ))}
