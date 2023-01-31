@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../App';
 import { getUserChats } from '../services.js/chat';
 import { setChats } from '../redux/actions/productActions';
+import { openSnackbar as openGlobalSnackbar } from '../redux/actions/productActions'
 
 
 function ChatsPanel() {
@@ -24,16 +25,22 @@ function ChatsPanel() {
 
         const getChats = async () => {
             const myChats = await getUserChats()
+
+            if (myChats?.error) {
+                dispath(openGlobalSnackbar(myChats?.error))
+
+                if (myChats?.statusCode === 401) {
+                    localStorage.removeItem('token')
+                    return navigate('/')
+                }
+            }
+
             dispath(setChats(myChats))
         }
         chatsRef.onSnapshot(() => {
             getChats()
         })
     }, [])
-
-    useEffect(() => {
-        console.log('Selected chat on snap: ', selectedChat)
-    }, [selectedChat])
 
     const onCloseSnackBar = () => {
         setOpenSnackBar(false)

@@ -96,8 +96,14 @@ export const getUserChats = async () => {
 
     const user = await authenticateUser()
 
+    console.log('User auth >>> ', user)
+
     if (!user) {
-        return { error: 'Looks like you are not logged in' }
+        console.log('User not found in db')
+        return {
+            error: 'Please login to continue',
+            statusCode: 401
+        }
     }
 
     const userChats = user.data().chats

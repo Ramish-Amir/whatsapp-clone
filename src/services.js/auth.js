@@ -59,6 +59,9 @@ export const authenticateUser = async () => {
 
     const usersRef = db.collection('users')
     const user = await usersRef.doc(userId).get()
+
+    if (!user?.exists) return null
+
     return user
 }
 

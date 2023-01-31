@@ -2,45 +2,31 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/ChatWindow.module.css'
 import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { openSnackbar } from '../redux/actions/productActions';
+import { openSnackbar, removeSelectedChat } from '../redux/actions/productActions';
 import { getChatUser, sendMessage } from '../services.js/chat';
 import { DEFAULT_AVATAR, db } from '../App';
 import { v4 as uuidv4 } from 'uuid';
 import { setSelectedChat } from '../redux/actions/productActions';
 
 
-
 function ChatWindow() {
     const selectedChat = useSelector(state => state.selectedChat)
     const [chatUser, setChatUser] = useState({})
     const [chatMessages, setChatMessages] = useState([])
+    const [input, setInput] = useState('');
+    const [smoothScroll, setSmoothScroll] = useState(false)
     const dispatch = useDispatch()
 
     const bottom = useRef()
-    const common = useRef()
-
     const userId = localStorage.getItem('token')
 
-    const [input, setInput] = useState('');
-
-    // useEffect(() => {
-        
-
-    //     return () => {
-    //         console.log('Chat changed >>> ', selectedChat?.chatId)
-    //     }
-    // }, [selectedChat?.chatId])
-
     useEffect(() => {
-        console.log('Chatttttt')
-        console.log('chat id: ', selectedChat?.chatId)
-        // bottom?.current?.scrollIntoView()
+        setSmoothScroll(false)
+        dispatch(setSelectedChat({}))
+
         setChatUser(getChatUser(selectedChat?.users))
-        // console.log('Chatttttt')
         if (selectedChat?.chatId) {
             const chatRef = db.collection('chats').doc(selectedChat.chatId).collection('messages').orderBy('time')
-            console.log('Second useEffect')
-
             const unsubscribe = chatRef.onSnapshot(snapshot => {
                 const messages = []
 
@@ -51,39 +37,42 @@ function ChatWindow() {
                             ...doc.data()
                         })
                     })
-
                     setChatMessages(messages)
-                    bottom?.current?.scrollIntoView()
                 }
             })
 
-
             return () => {
                 unsubscribe()
-                dispatch(setSelectedChat({}))
             }
-
 
         }
     }, [selectedChat.chatId])
 
+    useEffect(() => {
+        if (chatMessages?.length) {
+            smoothScroll
+                ? bottom?.current?.scrollIntoView({ behavior: 'smooth' })
+                : bottom?.current?.scrollIntoView()
+            setSmoothScroll(true)
+        }
+    }, [chatMessages])
+
     const onSendMessage = async (e) => {
         e.preventDefault()
 
-        // const messages = selectedChat?.messages || []
+        const text = input
+        setInput('')
         const message = {
-            text: input,
+            text,
             uid: userId,
             time: Date.now()
         }
-        // messages.push(newMessage)
+
         const response = await sendMessage(selectedChat?.chatId, message)
 
         if (response?.error) {
             dispatch(openSnackbar(response?.error))
         }
-
-        setInput('')
     }
 
     const getChatTime = (timestamp) => {
@@ -108,10 +97,7 @@ function ChatWindow() {
                         backgroundImage: `url(${chatUser?.profileUrl || DEFAULT_AVATAR})`,
                         backgroundSize: 'cover'
                     }} ></div>
-                    {/* {
-                        // console.log('chatUser: ', chatUser);
-                        console.log('selected chat: ', selectedChat)
-                    } */}
+
                     <div className={styles.chatTitle}>{chatUser?.name}</div>
                 </div>
                 <div className={styles.headerActions}>
@@ -122,9 +108,9 @@ function ChatWindow() {
 
             <div className={styles.chat}>
                 {
-                    chatMessages?.map((message, index) =>
+                    chatMessages?.map((message) =>
 
-                    (<div ref={index === chatMessages.length - 1 ? bottom : common} key={message?.id}
+                    (<div key={message?.id}
                         className={message?.uid === userId ? styles.sent : styles.received}>
                         <div className={styles.message}>
                             <span>{message?.text}</span>
@@ -132,9 +118,8 @@ function ChatWindow() {
                         </div>
                     </div>)
                     )
-
                 }
-                {/* <div ref={bottom}></div> */}
+                <div ref={bottom}></div>
             </div>
 
             <div className={styles.bottomInputBar}>
