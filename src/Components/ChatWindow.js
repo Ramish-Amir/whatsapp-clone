@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/ChatWindow.module.css'
 import { MdEmojiEmotions, MdAttachFile, MdMic, MdSearch, MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
-import { openSnackbar, removeSelectedChat } from '../redux/actions/productActions';
+import { openSnackbar } from '../redux/actions/productActions';
 import { getChatUser, sendMessage } from '../services.js/chat';
 import { DEFAULT_AVATAR, db } from '../App';
-import { v4 as uuidv4 } from 'uuid';
 import { setSelectedChat } from '../redux/actions/productActions';
 
 

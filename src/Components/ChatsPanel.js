@@ -17,7 +17,6 @@ function ChatsPanel() {
     const dispath = useDispatch()
     const [openSnackbar, setOpenSnackBar] = useState(false);
     const navigate = useNavigate();
-    const selectedChat = useSelector(state => state.selectedChat)
 
     const chatsRef = db.collection('chats')
 
@@ -70,7 +69,7 @@ function ChatsPanel() {
             </div>
             <div className={styles.chatTilesContainer}>
 
-                {allChats?.map((chat, index) => (
+                {!!allChats?.length && allChats?.map((chat, index) => (
                     <ChatTile key={index} id={index} chat={chat}
                     />
                 ))}

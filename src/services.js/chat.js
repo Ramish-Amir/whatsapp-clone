@@ -115,21 +115,40 @@ export const getUserChats = async () => {
             return []
         }
 
+        const chatChunks = divideChatIntoChunks(10, userChats)
         const myChats = []
 
-        const allChats = await chatsRef
-            .where('chatId', 'in', userChats)
-            .orderBy('updatedAt', 'desc')
-            .get()
+        for (const chunk of chatChunks) {
+            const allChats = await chatsRef
+                .where('chatId', 'in', chunk)
+                .orderBy('updatedAt', 'desc')
+                .get()
 
-        allChats?.docs?.forEach(chat => {
-            myChats.push(chat?.data())
-        })
+            allChats?.docs?.forEach(chat => {
+                console.log('Chat doc >> ', chat)
+                myChats.push(chat?.data())
+            })
+        }
 
         return myChats
     } catch (error) {
-        return error
+        console.log('Get user chats error: ', error)
+        return { error: 'Error loading chats' }
     }
+}
+
+export const divideChatIntoChunks = (chunkSize, userChats) => {
+    // const allChats = userChats
+    console.log('Input chats length: ', userChats?.length)
+    const chatChunks = []
+
+    while (userChats?.length > chunkSize) {
+        chatChunks.push(userChats.splice(0, chunkSize))
+    }
+
+    chatChunks.push(userChats)
+    return chatChunks
+
 }
 
 export const deleteUserChat = async (chat) => {

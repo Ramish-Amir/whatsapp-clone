@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router';
 import AuthCard from './AuthCard';
 
 
 function Home() {
+
+    const navigate = useNavigate()
+    useEffect(() => {
+        console.log('alksdjf alskdf')
+        const user = localStorage.getItem('token')
+
+        if (user) {
+            navigate('/whatsapp')
+        }
+    }, [])
+
     return (
         <div className='homeContainer'>
             <div className='homeCard'>
