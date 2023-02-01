@@ -64,12 +64,17 @@ export const getChatId = (firstId, secondId) => {
 }
 
 export const getChatById = async (chatId) => {
-    const chatsRef = db.collection('chats')
-    const chat = await chatsRef.doc(chatId).get()
+    try {
+        const chatsRef = db.collection('chats')
+        const chat = await chatsRef.doc(chatId).get()
 
-    if (!chat?.exists) return null
+        if (!chat?.exists) return null
 
-    return chat
+        return chat
+    } catch (error) {
+        console.log('Error: ', error)
+        return null
+    }
 }
 
 export const sendMessage = async (chatId, message) => {
@@ -92,35 +97,39 @@ export const sendMessage = async (chatId, message) => {
 }
 
 export const getUserChats = async () => {
-    const chatsRef = db.collection('chats')
+    try {
+        const chatsRef = db.collection('chats')
 
-    const user = await authenticateUser()
+        const user = await authenticateUser()
 
-    if (!user) {
-        return {
-            error: 'Please login to continue',
-            statusCode: 401
+        if (!user) {
+            return {
+                error: 'Please login to continue',
+                statusCode: 401
+            }
         }
+
+        const userChats = user.data().chats
+
+        if (!userChats?.length) {
+            return []
+        }
+
+        const myChats = []
+
+        const allChats = await chatsRef
+            .where('chatId', 'in', userChats)
+            .orderBy('updatedAt', 'desc')
+            .get()
+
+        allChats?.docs?.forEach(chat => {
+            myChats.push(chat?.data())
+        })
+
+        return myChats
+    } catch (error) {
+        return error
     }
-
-    const userChats = user.data().chats
-
-    if (!userChats?.length) {
-        return []
-    }
-
-    const myChats = []
-
-    const allChats = await chatsRef
-        .where('chatId', 'in', userChats)
-        .orderBy('updatedAt', 'desc')
-        .get()
-
-    allChats?.docs?.forEach(chat => {
-        myChats.push(chat?.data())
-    })
-
-    return myChats
 }
 
 export const deleteUserChat = async (chat) => {

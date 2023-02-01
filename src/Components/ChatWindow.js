@@ -60,6 +60,8 @@ function ChatWindow() {
     const onSendMessage = async (e) => {
         e.preventDefault()
 
+        if (!input.trim()) return
+
         const text = input
         setInput('')
         const message = {
