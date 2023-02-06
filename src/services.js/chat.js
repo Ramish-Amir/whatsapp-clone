@@ -29,26 +29,33 @@ export const createChat = async (email) => {
             return { error: `User [${email}] is already in your chat list` }
         }
 
+        const batch = db.batch()
         const usersRef = db.collection('users')
-
-        await usersRef.doc(user.id).update({
-            chats: [...user.data()?.chats, chatId]
-        })
-
-        await usersRef.doc(currentUser.id).update({
-            chats: [...currentUser.data()?.chats, chatId]
-        })
-
         const chatsRef = db.collection('chats')
-        await chatsRef.doc(chatId).set({
-            chatId,
-            users: [
-                { id: currentUser.id, name: currentUser.data().name, email: currentUser.data().email, profileUrl: currentUser.data().profileUrl },
-                { id: user.id, name: user.data().name, email: user.data().email, profileUrl: user.data().profileUrl },
-            ],
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        })
 
+        batch.update(
+            usersRef.doc(user.id),
+            { chats: [...user.data()?.chats, chatId] }
+        )
+
+        batch.update(
+            usersRef.doc(currentUser.id),
+            { chats: [...currentUser.data()?.chats, chatId] }
+        )
+
+        batch.set(
+            chatsRef.doc(chatId),
+            {
+                chatId,
+                users: [
+                    { id: currentUser.id, name: currentUser.data().name, email: currentUser.data().email, profileUrl: currentUser.data().profileUrl },
+                    { id: user.id, name: user.data().name, email: user.data().email, profileUrl: user.data().profileUrl },
+                ],
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            }
+        )
+
+        await batch.commit()
         return true
 
     } catch (error) {
@@ -79,19 +86,25 @@ export const getChatById = async (chatId) => {
 
 export const sendMessage = async (chatId, message) => {
     try {
+        const batch = db.batch()
         const chatRef = db.collection('chats').doc(chatId)
-        const messagesRef = db.collection('chats').doc(chatId).collection('messages')
+        const messagesRef = db.collection('chats').doc(chatId).collection('messages').doc()
 
-        await messagesRef.doc().set(message)
+        batch.set(messagesRef, message)
+        batch.update(
+            chatRef,
+            {
+                lastMessage: message?.text,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }
+        )
 
-        await chatRef.update({
-            lastMessage: message?.text,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        })
+        await batch.commit()
 
         return true
 
     } catch (error) {
+        console.error('ERROR >> ', error)
         return { error: 'Error sending message' }
     }
 }
