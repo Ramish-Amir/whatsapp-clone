@@ -7,7 +7,6 @@ function Home() {
 
     const navigate = useNavigate()
     useEffect(() => {
-        console.log('alksdjf alskdf')
         const user = localStorage.getItem('token')
 
         if (user) {
@@ -22,7 +21,7 @@ function Home() {
                 <h1 className='homeTitle'>WhatsApp Clone</h1>
                 <span>by Ramish Amir</span>
                 <p>
-                    [ Developed using React JS and Redux for learning purpose. No connection to database. All the data is saved using Redux State Management. ]
+                    [ Developed using React JS, Redux and Firebase for learning purpose. Register yourself with a dummy email and start chatting with your friends using their registered email. ]
                 </p>
                 <AuthCard />
             </div>

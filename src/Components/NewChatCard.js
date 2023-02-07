@@ -74,7 +74,7 @@ function NewChatCard(props) {
                 <input placeholder='Enter Profile Picture Url' value={chat?.profileUrl} onChange={(e) => {setChat({...chat, profileUrl: e.target.value})}} /> */}
                 {/* <div className={styles.footer}><button onClick={onAdd}>Add</button></div> */}
 
-                <input autoFocus placeholder='Enter email' value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                <input autoFocus placeholder="Enter your friend's email" value={email} onChange={(e) => { setEmail(e.target.value) }} />
 
                 <div className={styles.footer}><button onClick={onCreateChat}>Add</button></div>
             </form>

@@ -2,9 +2,9 @@
     width: 35%;
     min-width: 300px;
     min-height: 100vh;
-    border-right: 2px solid rgba(43,57,66,1);
+    border-right: 2px solid rgba(43, 57, 66, 1);
     background-color: rgba(18, 27, 34, 1);
-    overflow:visible;
+    overflow: visible;
     position: relative;
 }
 
@@ -19,8 +19,8 @@
 }
 
 .userDP {
-    background: url('https://wallpaperaccess.com/full/4149610.jpg') center center;
-    background-size: cover;
+    /* background: url('https://wallpaperaccess.com/full/4149610.jpg') center center;
+    background-size: cover; */
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -42,7 +42,7 @@
     width: 100%;
     background: rgba(18, 27, 34, 1);
     padding: 5px 12px;
-    border-bottom: 1px solid rgba(43,57,66,0.8);
+    border-bottom: 1px solid rgba(43, 57, 66, 0.8);
 }
 
 .searchBox {
@@ -89,5 +89,5 @@
 }
 
 .chatTilesContainer::-webkit-scrollbar-thumb {
-    background: rgba(55,62,68,1);
+    background: rgba(55, 62, 68, 1);
 }

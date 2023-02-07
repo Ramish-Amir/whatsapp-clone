@@ -138,7 +138,6 @@ export const getUserChats = async () => {
                 .get()
 
             allChats?.docs?.forEach(chat => {
-                console.log('Chat doc >> ', chat)
                 myChats.push(chat?.data())
             })
         }
@@ -152,7 +151,6 @@ export const getUserChats = async () => {
 
 export const divideChatIntoChunks = (chunkSize, userChats) => {
     // const allChats = userChats
-    console.log('Input chats length: ', userChats?.length)
     const chatChunks = []
 
     while (userChats?.length > chunkSize) {

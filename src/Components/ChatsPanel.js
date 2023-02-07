@@ -10,10 +10,12 @@ import { db } from '../App';
 import { getUserChats } from '../services.js/chat';
 import { setChats } from '../redux/actions/productActions';
 import { openSnackbar as openGlobalSnackbar } from '../redux/actions/productActions'
+import { removeUser } from '../redux/actions/userActions';
 
 
 function ChatsPanel() {
     const allChats = useSelector((state) => state.allChats.chats)
+    const user = useSelector((state) => state.user)
     const dispath = useDispatch()
     const [openSnackbar, setOpenSnackBar] = useState(false);
     const navigate = useNavigate();
@@ -49,12 +51,18 @@ function ChatsPanel() {
         <div className={styles.chatsPanel}>
 
             <div className={styles.cpHeader}>
-                <div className={styles.userDP}></div>
+                <div className={styles.userDP}
+                    style={{
+                        backgroundImage: `url(${user?.profileUrl})`,
+                        backgroundSize: 'cover'
+                    }}
+                ></div>
                 <div className={styles.headerActions}>
                     <MdDonutLarge />
                     <MdChat onClick={() => { setOpenSnackBar(!openSnackbar) }} />
                     <MdLogout onClick={() => {
                         localStorage.removeItem('token')
+                        dispath(removeUser())
                         navigate('/')
                     }} />
                 </div>
